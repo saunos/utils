@@ -3,7 +3,7 @@ import type { DebounceFunction } from '../curry'
 
 describe('curry module', () => {
   describe('pipe function', () => {
-    test.only('calls all given functions', () => {
+    test('calls all given functions', () => {
       const addFive = (base: string, repeat: number) => base.repeat(repeat)
       const len = (str: string) => str.length
       const twoX = (num: number) => num * 2
