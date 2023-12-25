@@ -1,7 +1,7 @@
 name: Check Semver for Pull Request
 on:
   pull_request:
-    branches: [master]
+    branches: [main]
     types: [labeled, unlabeled, opened, synchronize]
 jobs:
   verify-version:
@@ -14,14 +14,14 @@ jobs:
         run: echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
       - uses: actions/checkout@v3
         with:
-          ref: master
+          ref: main
       - name: Get Base Version
         id: base-version
         run: echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: yarn add semver
+      - run: npm install semver
       - uses: actions/github-script@v6
         env:
           PR_VERSION: ${{steps.pr-version.outputs.version}}

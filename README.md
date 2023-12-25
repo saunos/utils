@@ -1,12 +1,4 @@
-# Radash
-
-:loud_sound: `/raw-dash/`
-
-<div align="center">
-  <p align="center">
-    <img src="https://github.com/rayepps/radash/raw/master/banner.png" alt="radash" width="100%" style="border-radius:4px" />
-  </p>
-</div>
+# Utils
 
 <div>
   <h3 align="center">
@@ -15,35 +7,29 @@
 </div>
 
 <p align="center">
-  <a href="https://bundlephobia.com/package/radash">
-    <img src="https://img.shields.io/bundlephobia/minzip/radash?label=minzipped" alt="bundle size" height="18">
+  <a href="https://bundlephobia.com/package/@saunos/utils">
+    <img src="https://img.shields.io/bundlephobia/minzip/@saunos/utils?label=minzipped" alt="bundle size" height="18">
   </a>
-  <a href="https://www.npmjs.com/package/radash">
-    <img src="https://img.shields.io/npm/dm/radash.svg" alt="npm downloads" height="18">
+  <a href="https://www.npmjs.com/package/@saunos/utils">
+    <img src="https://img.shields.io/npm/dm/@saunos/utils.svg" alt="npm downloads" height="18">
   </a>
-  <a href="https://www.npmjs.com/package/radash">
-    <img src="https://img.shields.io/npm/v/radash.svg" alt="npm version" height="18">
+  <a href="https://www.npmjs.com/package/@saunos/utils">
+    <img src="https://img.shields.io/npm/v/@saunos/utils.svg" alt="npm version" height="18">
   </a>
-  <a href="https://github.com/rayepps/radash">
-    <img src="https://img.shields.io/npm/l/radash.svg" alt="MIT license" height="18">
+  <a href="https://github.com/rayepps/@saunos/utils">
+    <img src="https://img.shields.io/npm/l/@saunos/utils.svg" alt="MIT license" height="18">
   </a>
 </p>
-
-<div align="center">
-  <a href="https://radash-docs.vercel.app" target="_blank">
-      Full Documentation
-  </a>
-</div>
 
 ## Install
 
 ```
-yarn add radash
+npm install @saunos/utils
 ```
 
 ## Usage
 
-A very brief kitchen sink. See the full documentation [here](https://radash-docs.vercel.app).
+A very brief kitchen sink.
 
 ```ts
 import * as _ from 'radash'
@@ -85,7 +71,3 @@ const allGods = await _.map(gods, async ({ name }) => {
   return api.gods.findByName(name)
 })
 ```
-
-## Contributing
-
-Contributions are welcome and appreciated! Check out the [contributing guide](./.github/contributing.md) before you dive in.
