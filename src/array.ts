@@ -726,7 +726,7 @@ export const replaceOrAppend = <T>(
  *
  * toggle(gods, 'vishnu', g => g, { strategy: 'prepend' }) // => [vishnu, ra, zeus, loki]
  */
-export const toggle = <T>(
+const _toggle = <T>(
   list: readonly T[],
   item: T,
   /**
@@ -749,6 +749,54 @@ export const toggle = <T>(
   const strategy = options?.strategy ?? 'append'
   if (strategy === 'append') return [...list, item]
   return [item, ...list]
+}
+
+/**
+ * If the item matching the condition already exists
+ * in the list it will be removed. If it does not it
+ * will be added.
+ *
+ * @example
+ * const gods = ['ra', 'zeus', 'loki']
+ *
+ * toggle(gods, 'ra')     // => [zeus, loki]
+ * toggle(gods, 'vishnu') // => [ra, zeus, loki, vishnu]
+ *
+ * const ra = { name: 'Ra' }
+ * const zeus = { name: 'Zeus' }
+ * const loki = { name: 'Loki' }
+ * const vishnu = { name: 'Vishnu' }
+ *
+ * const gods = [ra, zeus, loki]
+ *
+ * toggle(gods, ra, g => g.name)     // => [zeus, loki]
+ * toggle(gods, vishnu, g => g.name) // => [ra, zeus, loki, vishnu]
+ *
+ * const gods = ['ra', 'zeus', 'loki']
+ *
+ * toggle(gods, 'vishnu', g => g, { strategy: 'prepend' }) // => [vishnu, ra, zeus, loki]
+ *
+ * toggle(gods, ['vishnu', 'ra']) // => [vishnu, zeus, loki]
+ */
+export const toggle = <T>(
+  list: readonly T[],
+  items: readonly T[] | T,
+  /**
+   * Converts an item of type T item into a value that
+   * can be checked for equality
+   */
+  toKey?: null | ((item: T, idx: number) => number | string | symbol),
+  options?: {
+    strategy?: 'prepend' | 'append'
+  }
+) => {
+  if (!Array.isArray(items)) return _toggle(list, items as T, toKey, options)
+
+  let result = [...list]
+  for (const item of items) {
+    result = _toggle(result, item, toKey, options)
+  }
+  return result
 }
 
 type Falsy = null | undefined | false | '' | 0 | 0n
