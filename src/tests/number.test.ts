@@ -45,4 +45,36 @@ describe('number module', () => {
       expect(result).toBe(20)
     })
   })
+  describe('inRange function', () => {
+    test('computes correctly', () => {
+      {
+        const result = _.inRange(10, 0, 20)
+        expect(result).toBe(true)
+      }
+      {
+        const result = _.inRange(0, 0, 20)
+        expect(result).toBe(true)
+      }
+      {
+        const result = _.inRange(10, 0, 10)
+        expect(result).toBe(true)
+      }
+      {
+        const result = _.inRange(10, 10, 15, 'start-exclusive')
+        expect(result).toBe(false)
+      }
+      {
+        const result = _.inRange(10, 0, 10, 'end-exclusive')
+        expect(result).toBe(false)
+      }
+      {
+        const result = _.inRange(10, 0, 10, 'both-exclusive')
+        expect(result).toBe(false)
+      }
+      {
+        const result = _.inRange(0, 0, 10, 'both-exclusive')
+        expect(result).toBe(false)
+      }
+    })
+  })
 })

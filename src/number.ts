@@ -21,3 +21,31 @@ export const toInt = <T extends number | null = number>(
   const result = parseInt(value)
   return Number.isNaN(result) ? def : result
 }
+
+/**
+ * Checks if a value is within a specified range.
+ * @example
+ * inRange(10, 0, 20) // true
+ *
+ * @param value
+ * @param start
+ * @param end
+ * @param behaviour - by default, both ends are inclusive
+ */
+export const inRange = (
+  value: number,
+  start: number,
+  end: number,
+  behaviour?: 'start-exclusive' | 'end-exclusive' | 'both-exclusive'
+): boolean => {
+  if (behaviour === 'start-exclusive') {
+    return value > start && value <= end
+  }
+  if (behaviour === 'end-exclusive') {
+    return value >= start && value < end
+  }
+  if (behaviour === 'both-exclusive') {
+    return value > start && value < end
+  }
+  return value >= start && value <= end
+}

@@ -46,7 +46,7 @@ export {
   memo,
   throttle
 } from './curry'
-export { toFloat, toInt } from './number'
+export { toFloat, toInt, inRange } from './number'
 export {
   assign,
   clone,
