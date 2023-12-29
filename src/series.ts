@@ -45,10 +45,10 @@ import { list } from './array'
  * weekdays.previous({ day: 'tuesday' }) // => { day: 'monday' }
  */
 export const series = <T>(
-  items: T[],
+  items: T[] | readonly T[],
   toKey: (item: T) => string | symbol = item => `${item}`
 ) => {
-  const { indexesByKey, itemsByIndex } = items.reduce(
+  const { indexesByKey, itemsByIndex } = (items as T[]).reduce(
     (acc, item, idx) => ({
       indexesByKey: {
         ...acc.indexesByKey,
