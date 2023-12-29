@@ -443,22 +443,17 @@ export const cluster = <T>(list: readonly T[], size = 2): T[][] => {
  * //     { name: 'Salmon', weight: 22, source: 'river' }
  * // ]
  */
-export const unique = <T, K extends string | number | symbol>(
+export const unique = <T, K>(
   array: readonly T[],
   toKey?: (item: T) => K
 ): T[] => {
-  const valueMap = array.reduce(
-    (acc, item) => {
-      const key = toKey
-        ? toKey(item)
-        : (item as any as string | number | symbol)
-      if (acc[key]) return acc
-      acc[key] = item
-      return acc
-    },
-    {} as Record<string | number | symbol, T>
-  )
-  return Object.values(valueMap)
+  const valueMap = array.reduce((acc, item) => {
+    const key = toKey ? toKey(item) : item
+    if (acc.get(key)) return acc
+    acc.set(key, item)
+    return acc
+  }, new Map())
+  return Array.from(valueMap.values())
 }
 
 /**

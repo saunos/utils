@@ -335,6 +335,28 @@ describe('array module', () => {
       expect(c.id).toBe('c')
       expect(c.word).toBe('yolo')
     })
+
+    test('correctly handles non string, number or symbol values', () => {
+      const list = [
+        null,
+        null,
+        true,
+        true,
+        'true',
+        false,
+        { id: 'a', word: 'hello' },
+        { id: 'a', word: 'hello' }
+      ]
+      const result = _.unique(list)
+      expect(result).toEqual([
+        null,
+        true,
+        'true',
+        false,
+        { id: 'a', word: 'hello' },
+        { id: 'a', word: 'hello' }
+      ])
+    })
   })
 
   describe('range function', () => {
