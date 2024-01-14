@@ -15,6 +15,7 @@ export {
   max,
   merge,
   min,
+  mutableRemove,
   objectify,
   range,
   replace,

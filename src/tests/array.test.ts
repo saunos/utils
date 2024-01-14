@@ -749,4 +749,19 @@ describe('array module', () => {
       expect(result).toEqual(['b', 'a'])
     })
   })
+
+  describe('mutableRemove function', () => {
+    test('should remove item from list', () => {
+      const list = ['a', 'b', 'c']
+      const res = _.mutableRemove(list, it => it === 'b')
+      expect(list).toEqual(['a', 'c'])
+      expect(res).not.toEqual(false)
+    })
+    test('should not remove item from list when it does not exist', () => {
+      const list = ['a', 'b', 'c']
+      const res = _.mutableRemove(list, it => it === 'x')
+      expect(list).toEqual(['a', 'b', 'c'])
+      expect(res).toEqual(false)
+    })
+  })
 })

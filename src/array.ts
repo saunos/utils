@@ -861,3 +861,19 @@ export function shift<T>(arr: Array<T>, n: number) {
 
   return [...arr.slice(-shiftNumber, arr.length), ...arr.slice(0, -shiftNumber)]
 }
+
+/**
+ * Remove an item from an array in place
+ * @example
+ * const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+ * const success = mutableRemove(arr, i => i === 5) // => [1, 2, 3, 4, 6, 7, 8, 9]
+ * success // => true
+ */
+export function mutableRemove<T>(
+  arr: Array<T>,
+  predicate: (item: T) => boolean
+): false | T[] {
+  const index = arr.findIndex(predicate)
+  if (index === -1) return false
+  return arr.splice(index, 1)
+}
