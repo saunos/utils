@@ -1,3 +1,6 @@
+/**
+ * @category Number
+ */
 export const toFloat = <T extends number | null = number>(
   value: any,
   defaultValue?: T
@@ -10,6 +13,9 @@ export const toFloat = <T extends number | null = number>(
   return Number.isNaN(result) ? def : result
 }
 
+/**
+ * @category Number
+ */
 export const toInt = <T extends number | null = number>(
   value: any,
   defaultValue?: T
@@ -23,14 +29,14 @@ export const toInt = <T extends number | null = number>(
 }
 
 /**
+ * @category Number
+ *
+ * @description
  * Checks if a value is within a specified range.
+ *
  * @example
  * inRange(10, 0, 20) // true
- *
- * @param value
- * @param start
- * @param end
- * @param behaviour - by default, both ends are inclusive
+ * inRange(10, 0, 10, 'start-exclusive') // false
  */
 export const inRange = (
   value: number,

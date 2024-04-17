@@ -21,6 +21,9 @@
   </a>
 </p>
 
+## Docs
+Can be found [here](https://tsdocs.dev/)
+
 ## Install
 
 ```

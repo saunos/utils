@@ -2,6 +2,10 @@ import * as _ from '..'
 import type { DebounceFunction } from '../curry'
 
 describe('curry module', () => {
+  beforeEach(() => {
+    jest.useFakeTimers({ advanceTimers: true })
+  })
+
   describe('pipe function', () => {
     test('calls all given functions', () => {
       const addFive = (base: string, repeat: number) => base.repeat(repeat)
@@ -121,7 +125,9 @@ describe('curry module', () => {
     test('only executes once when called rapidly', async () => {
       runFunc3Times()
       expect(mockFunc).toHaveBeenCalledTimes(0)
-      await _.sleep(610)
+      await _.sleep(610, () => {
+        jest.advanceTimersByTimeAsync(610)
+      })
       expect(mockFunc).toHaveBeenCalledTimes(1)
     })
 
@@ -147,7 +153,9 @@ describe('curry module', () => {
       expect(mockFunc).toHaveBeenCalledTimes(1)
       func()
       expect(mockFunc).toHaveBeenCalledTimes(1)
-      await _.sleep(610)
+      await _.sleep(610, () => {
+        jest.advanceTimersByTimeAsync(610)
+      })
       expect(mockFunc).toHaveBeenCalledTimes(2)
       func.flush()
       expect(mockFunc).toHaveBeenCalledTimes(3)
@@ -158,11 +166,15 @@ describe('curry module', () => {
       func()
       results.push(func.isPending())
       results.push(func.isPending())
-      await _.sleep(610)
+      await _.sleep(610, () => {
+        jest.advanceTimersByTimeAsync(610)
+      })
       results.push(func.isPending())
       func()
       results.push(func.isPending())
-      await _.sleep(610)
+      await _.sleep(610, () => {
+        jest.advanceTimersByTimeAsync(610)
+      })
       results.push(func.isPending())
       expect(results).toEqual([true, true, false, true, false])
     })
@@ -170,7 +182,9 @@ describe('curry module', () => {
     test('returns if there is any pending invocation when the pending method is called', async () => {
       func()
       func.cancel()
-      await _.sleep(610)
+      await _.sleep(610, () => {
+        jest.advanceTimersByTimeAsync(610)
+      })
       expect(mockFunc).toHaveBeenCalledTimes(0)
     })
   })
@@ -183,7 +197,9 @@ describe('curry module', () => {
       func()
       func()
       expect(calls).toBe(1)
-      await _.sleep(610)
+      await _.sleep(610, () => {
+        jest.advanceTimersByTimeAsync(610)
+      })
       func()
       func()
       func()
@@ -200,7 +216,9 @@ describe('curry module', () => {
       results.push(func.isThrottled())
       func()
       results.push(func.isThrottled())
-      await _.sleep(610)
+      await _.sleep(610, () => {
+        jest.advanceTimersByTimeAsync(610)
+      })
       results.push(func.isThrottled())
       expect(results).toEqual([false, true, true, true, false])
     })

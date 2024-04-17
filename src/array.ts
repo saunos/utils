@@ -1,6 +1,9 @@
 import { isArray, isFunction } from './typed'
 
 /**
+ * @category Array
+ *
+ * @description
  * Sorts an array of items into groups. The return value is a map where the keys are
  * the group ids the given getGroupId function produced and the value is an array of
  * each item in that group.
@@ -23,7 +26,7 @@ import { isArray, isFunction } from './typed'
  * const fishBySource = group(fish, f => f.source) // => { ocean: [marlin], lake: [bass, trout] }
  */
 export const group = <T, Key extends string | number | symbol>(
-  array: readonly T[],
+  array: ReadonlyArray<T>,
   getGroupId: (item: T) => Key
 ): Partial<Record<Key, T[]>> => {
   return array.reduce(
@@ -38,40 +41,38 @@ export const group = <T, Key extends string | number | symbol>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Creates an array of grouped elements, the first of which contains the
  * first elements of the given arrays, the second of which contains the
  * second elements of the given arrays, and so on.
+ * credit:
+ *  https://gist.github.com/briancavalier/62f784e20e4fffc4d671126b7f91bad0
  *
  * @example
  * const zipped = zip(['a', 'b'], [1, 2], [true, false]) // [['a', 1, true], ['b', 2, false]]
  */
-export function zip<T1, T2, T3, T4, T5>(
-  array1: T1[],
-  array2: T2[],
-  array3: T3[],
-  array4: T4[],
-  array5: T5[]
-): [T1, T2, T3, T4, T5][]
-export function zip<T1, T2, T3, T4>(
-  array1: T1[],
-  array2: T2[],
-  array3: T3[],
-  array4: T4[]
-): [T1, T2, T3, T4][]
-export function zip<T1, T2, T3>(
-  array1: T1[],
-  array2: T2[],
-  array3: T3[]
-): [T1, T2, T3][]
-export function zip<T1, T2>(array1: T1[], array2: T2[]): [T1, T2][]
-export function zip<T>(...arrays: T[][]): T[][] {
+export function zip<Arrays extends ReadonlyArray<any>[]>(
+  ...arrays: Arrays
+): ReadonlyArray<Zip<Arrays>> {
   if (!arrays || !arrays.length) return []
-  return new Array(Math.max(...arrays.map(({ length }) => length)))
-    .fill([])
-    .map((_, idx) => arrays.map(array => array[idx]))
+  const len = Math.min(...arrays.map(a => a.length))
+  const zipped: Zip<Arrays>[] = new Array(len)
+  for (let i = 0; i < len; i++) {
+    zipped[i] = arrays.map(a => a[i]) as Zip<Arrays>
+  }
+  return zipped
+}
+
+type Zip<A extends ReadonlyArray<any>> = {
+  [K in keyof A]: A[K] extends ReadonlyArray<infer T> ? T : never
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Creates an object mapping the specified keys to their corresponding values
  *
  * @example
@@ -80,7 +81,7 @@ export function zip<T>(...arrays: T[][]): T[][] {
  * const zipped = zipToObject(['a', 'b'], 1) // { a: 1, b: 1 }
  */
 export function zipToObject<K extends string | number | symbol, V>(
-  keys: K[],
+  keys: readonly K[],
   values: V | ((key: K, idx: number) => V) | V[]
 ): Record<K, V> {
   if (!keys || !keys.length) {
@@ -103,6 +104,9 @@ export function zipToObject<K extends string | number | symbol, V>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Go through a list of items, starting with the first item,
  * and comparing with the second. Keep the one you want then
  * compare that to the next item in the list with the same
@@ -119,6 +123,9 @@ export const boil = <T>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Sum all numbers in an array. Optionally provide a function
  * to convert objects in the array to number values.
  *
@@ -136,6 +143,9 @@ export const sum = <T extends number | object>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Get the first item in an array or a default value
  */
 export const first = <T>(
@@ -146,7 +156,9 @@ export const first = <T>(
 }
 
 /**
- * Get the last item in an array or a default value
+ * @category Array
+ *
+ * @description
  */
 export const last = <T>(
   array: readonly T[],
@@ -156,6 +168,9 @@ export const last = <T>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Sort an array without modifying it and return
  * the newly sorted value
  *
@@ -189,6 +204,9 @@ export const sort = <T>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Sort an array without modifying it and return
  * the newly sorted value. Allows for a string
  * sorting value.
@@ -227,7 +245,13 @@ export const alphabetical = <T>(
 }
 
 /**
- * Given an array of objects and an identity callback function to determine how each object should be identified. Returns an object where the keys are the id values the callback returned and each value is an integer telling how many times that id occurred.
+ * @category Array
+ *
+ * @description
+ * Given an array of objects and an identity callback function to determine how each object should
+ * be identified. Returns an object where the keys are the id values the callback returned and each value
+ * is an integer telling how many times that id occurred.
+ *
  * @example
  *  const gods = [
  *   {
@@ -261,6 +285,9 @@ export const counting = <T, TId extends string | number | symbol>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Replace an element in an array with a new
  * item without modifying the array and return
  * the new value
@@ -309,6 +336,9 @@ export const replace = <T>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Convert an array to a dictionary by mapping each item
  * into a dictionary key & value
  *
@@ -349,6 +379,9 @@ export const objectify = <T, Key extends string | number | symbol, Value = T>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Max gets the greatest value from a list
  *
  * @example
@@ -370,6 +403,9 @@ export function max<T>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Min gets the smallest value from a list
  *
  * @example
@@ -391,6 +427,9 @@ export function min<T>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Splits a single list into many lists of the desired size. If
  * given a list of 10 items and a size of 2, it will return 5
  * lists with 2 items each
@@ -413,6 +452,9 @@ export const cluster = <T>(list: readonly T[], size = 2): T[][] => {
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Given a list of items returns a new list with only
  * unique items. Accepts an optional identity function
  * to convert each item in the list to a comparable identity
@@ -457,6 +499,9 @@ export const unique = <T, K>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Creates a generator that will produce an iteration through
  * the range of number as requested.
  *
@@ -486,6 +531,9 @@ export function* range<T = number>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Creates a list of given start, end, value, and
  * step parameters.
  *
@@ -509,8 +557,14 @@ export const list = <T = number>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Given an array of arrays, returns a single
  * dimentional array with all items in it.
+ *
+ * @deprecated
+ * Use Array.prototype.flat instead
  *
  * @example
  * const gods = [['ra', 'loki'], ['zeus']]
@@ -525,6 +579,9 @@ export const flat = <T>(lists: readonly T[][]): T[] => {
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Given two arrays, returns true if any
  * elements intersect
  *
@@ -556,6 +613,9 @@ export const intersects = <T, K extends string | number | symbol>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Split an array into two array based on
  * a true/false condition function
  *
@@ -600,6 +660,9 @@ export const fork = <T>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Given two lists of the same type, iterate the first list
  * and replace items matched by the matcher func in the
  * first place.
@@ -647,6 +710,9 @@ export const merge = <T>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Replace an item in an array by a match function condition. If
  * no items match the function condition, appends the new item to
  * the end of the list.
@@ -702,29 +768,7 @@ export const replaceOrAppend = <T>(
 }
 
 /**
- * If the item matching the condition already exists
- * in the list it will be removed. If it does not it
- * will be added.
  *
- * @example
- * const gods = ['ra', 'zeus', 'loki']
- *
- * toggle(gods, 'ra')     // => [zeus, loki]
- * toggle(gods, 'vishnu') // => [ra, zeus, loki, vishnu]
- *
- * const ra = { name: 'Ra' }
- * const zeus = { name: 'Zeus' }
- * const loki = { name: 'Loki' }
- * const vishnu = { name: 'Vishnu' }
- *
- * const gods = [ra, zeus, loki]
- *
- * toggle(gods, ra, g => g.name)     // => [zeus, loki]
- * toggle(gods, vishnu, g => g.name) // => [ra, zeus, loki, vishnu]
- *
- * const gods = ['ra', 'zeus', 'loki']
- *
- * toggle(gods, 'vishnu', g => g, { strategy: 'prepend' }) // => [vishnu, ra, zeus, loki]
  */
 const _toggle = <T>(
   list: readonly T[],
@@ -752,6 +796,9 @@ const _toggle = <T>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * If the item matching the condition already exists
  * in the list it will be removed. If it does not it
  * will be added.
@@ -799,9 +846,50 @@ export const toggle = <T>(
   return result
 }
 
+/**
+ * @category Array
+ *
+ * @description
+ * If the item matching the condition already exists
+ * in the list it will be removed. If it does not it
+ * will be added. This function **mutates** the list.
+ *
+ * @example
+ * const gods = ['ra', 'zeus', 'loki']
+ * toggleMut(gods, 'ra')     // => [zeus, loki]
+ *
+ * const gods = ['zeus', 'loki']
+ * toggleMut(gods, 'ra')     // => [zeus, loki, ra]
+ */
+export function toggleMut<T extends {}>(
+  list: T[],
+  item: T,
+  // toKey?: null | ((item: T, idx: number) => number | string | symbol),
+  options?: {
+    strategy?: 'prepend' | 'append'
+  }
+) {
+  const idx = list.findIndex(x => x === item)
+  if (idx === -1) {
+    if (options?.strategy === 'prepend') {
+      list.unshift(item)
+    } else {
+      list.push(item)
+    }
+    return list
+  }
+
+  list.splice(idx, 1)
+
+  return list
+}
+
 type Falsy = null | undefined | false | '' | 0 | 0n
 
 /**
+ * @category Array
+ *
+ * @description
  * Given a list returns a new list with
  * only truthy values
  *
@@ -815,6 +903,9 @@ export const compact = <T>(list: readonly (T | Falsy)[]): T[] => {
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Returns all items from the first list that
  * do not exist in the second list.
  *
@@ -844,6 +935,9 @@ export const diff = <T>(
 }
 
 /**
+ * @category Array
+ *
+ * @description
  * Shift array items by n steps
  * If n > 0 items will shift n steps to the right
  * If n < 0 items will shift n steps to the left
@@ -863,13 +957,17 @@ export function shift<T>(arr: Array<T>, n: number) {
 }
 
 /**
- * Remove an item from an array in place
+ * @category Array
+ *
+ * @description
+ * Remove an item from an array. It mutates the array
+ *
  * @example
  * const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
- * const success = mutableRemove(arr, i => i === 5) // => [1, 2, 3, 4, 6, 7, 8, 9]
+ * const success = removeMut(arr, i => i === 5) // => [1, 2, 3, 4, 6, 7, 8, 9]
  * success // => true
  */
-export function mutableRemove<T>(
+export function removeMut<T>(
   arr: Array<T>,
   predicate: (item: T) => boolean
 ): false | T[] {

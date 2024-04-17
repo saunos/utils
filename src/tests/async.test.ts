@@ -2,6 +2,8 @@ import * as _ from '..'
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { AggregateError } from '../async'
 
+afterEach(() => jest.useRealTimers())
+
 describe('async module', () => {
   beforeEach(() => jest.useFakeTimers({ advanceTimers: true }))
 
@@ -270,7 +272,9 @@ describe('async module', () => {
     test('suspends a thread for a specified number of milliseconds', async () => {
       const ONE_SECOND = 1000
       const before = Date.now()
-      await _.sleep(ONE_SECOND)
+      _.sleep(ONE_SECOND, () => {
+        jest.advanceTimersByTime(ONE_SECOND)
+      })
       const after = Date.now()
       expect(after).toBeGreaterThanOrEqual(before + ONE_SECOND)
     })
@@ -324,7 +328,7 @@ describe('async module', () => {
     test('returns all results from all functions', async () => {
       const [errors, results] = await _.try(async () => {
         return _.parallel(1, _.list(1, 3), async num => {
-          await _.sleep(1000)
+          await _.sleep(1000, () => jest.advanceTimersByTimeAsync(1000))
           return `hi_${num}`
         })
       })()
@@ -334,7 +338,7 @@ describe('async module', () => {
     test('throws erros as array of all errors', async () => {
       const [error, results] = await _.try(async () => {
         return _.parallel(1, _.list(1, 3), async num => {
-          await _.sleep(1000)
+          await _.sleep(1000, () => jest.advanceTimersByTimeAsync(1000))
           if (num === 2) throw new Error('number is 2')
           return `hi_${num}`
         })
@@ -350,7 +354,7 @@ describe('async module', () => {
       await _.parallel(3, _.list(1, 14), async () => {
         numInProgress++
         tracking.push(numInProgress)
-        await _.sleep(300)
+        await _.sleep(300, () => jest.advanceTimersByTimeAsync(300))
         numInProgress--
       })
       expect(Math.max(...tracking)).toEqual(3)

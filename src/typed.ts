@@ -105,3 +105,18 @@ export const isEqual = <TType>(x: TType, y: TType): boolean => {
   }
   return true
 }
+
+export function assert(condition: any, msg?: string): asserts condition {
+  if (!condition) {
+    throw new Error(msg)
+  }
+}
+
+export function assertNotNull<T>(
+  value: T,
+  msg?: string
+): asserts value is NonNullable<T> {
+  if (value === null || value === undefined) {
+    throw new Error(msg)
+  }
+}

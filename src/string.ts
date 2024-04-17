@@ -1,4 +1,7 @@
 /**
+ * @category String
+ *
+ * @description
  * Capitalize the first word of the string
  *
  * @example
@@ -12,6 +15,9 @@ export const capitalize = (str: string): string => {
 }
 
 /**
+ * @category String
+ *
+ * @description
  * Formats the given string in camel case fashion
  *
  * @example
@@ -33,6 +39,9 @@ export const camel = (str: string): string => {
 }
 
 /**
+ * @category String
+ *
+ * @description
  * Formats the given string in snake case fashion
  *
  * @example
@@ -62,6 +71,9 @@ export const snake = (
 }
 
 /**
+ * @category String
+ *
+ * @description
  * Formats the given string in dash case fashion
  *
  * @example
@@ -83,6 +95,9 @@ export const dash = (str: string): string => {
 }
 
 /**
+ * @category String
+ *
+ * @description
  * Formats the given string in pascal case fashion
  *
  * @example
@@ -96,6 +111,9 @@ export const pascal = (str: string): string => {
 }
 
 /**
+ * @category String
+ *
+ * @description
  * Formats the given string in title case fashion
  *
  * @example
@@ -115,6 +133,9 @@ export const title = (str: string | null | undefined): string => {
 }
 
 /**
+ * @category String
+ *
+ * @description
  * template is used to replace data by name in template strings.
  * The default expression looks for {{name}} to identify names.
  *
@@ -133,6 +154,9 @@ export const template = (
 }
 
 /**
+ * @category String
+ *
+ * @description
  * Trims all prefix and suffix characters from the given
  * string. Like the builtin trim function but accepts
  * other characters you would like to trim and trims

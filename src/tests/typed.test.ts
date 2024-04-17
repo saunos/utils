@@ -541,4 +541,29 @@ describe('typed module', () => {
       expect(_.isEqual([complex], [{ ...complex, num: 222 }])).toBe(false)
     })
   })
+
+  describe('assert function', () => {
+    test('throws error for false condition', () => {
+      expect(() => _.assert(false, 'error message')).toThrow('error message')
+    })
+    test('does not throw error for true condition', () => {
+      expect(() => _.assert(true, 'error message')).not.toThrow()
+    })
+  })
+
+  describe('assertNotNull function', () => {
+    test('throws error for null value', () => {
+      expect(() => _.assertNotNull(null, 'error message')).toThrow(
+        'error message'
+      )
+    })
+    test('throws error for undefined value', () => {
+      expect(() => _.assertNotNull(undefined, 'error message')).toThrow(
+        'error message'
+      )
+    })
+    test('does not throw error for non-null value', () => {
+      expect(() => _.assertNotNull(0, 'error message')).not.toThrow()
+    })
+  })
 })

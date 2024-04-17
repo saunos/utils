@@ -57,7 +57,6 @@ describe('array module', () => {
     })
 
     test('returns an empty array if nothing is passed', () => {
-      // @ts-ignore
       const result = _.zip()
       expect(result).toEqual([])
     })
@@ -750,16 +749,42 @@ describe('array module', () => {
     })
   })
 
-  describe('mutableRemove function', () => {
+  describe('toggleInPlace function', () => {
+    it('should return same reference', () => {
+      const arr = ['a']
+      const result = _.toggleMut(arr, 'a')
+      expect(arr === result).toBe(true)
+    })
+
+    it('should add item to the end of list', () => {
+      const arr = ['a']
+      const result = _.toggleMut(arr, 'b')
+      expect(arr).toEqual(['a', 'b'])
+    })
+
+    it('should remove item from list', () => {
+      const arr = ['a', 'b']
+      const result = _.toggleMut(arr, 'b')
+      expect(arr).toEqual(['a'])
+    })
+
+    it('should add item to the beginning of list', () => {
+      const arr = ['a']
+      const result = _.toggleMut(arr, 'b', { strategy: 'prepend' })
+      expect(arr).toEqual(['b', 'a'])
+    })
+  })
+
+  describe('removeMut function', () => {
     test('should remove item from list', () => {
       const list = ['a', 'b', 'c']
-      const res = _.mutableRemove(list, it => it === 'b')
+      const res = _.removeMut(list, it => it === 'b')
       expect(list).toEqual(['a', 'c'])
       expect(res).not.toEqual(false)
     })
     test('should not remove item from list when it does not exist', () => {
       const list = ['a', 'b', 'c']
-      const res = _.mutableRemove(list, it => it === 'x')
+      const res = _.removeMut(list, it => it === 'x')
       expect(list).toEqual(['a', 'b', 'c'])
       expect(res).toEqual(false)
     })
