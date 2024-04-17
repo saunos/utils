@@ -64,6 +64,10 @@ describe('number module', () => {
         expect(result).toBe(false)
       }
       {
+        const result = _.inRange(11, 10, 15, 'start-exclusive')
+        expect(result).toBe(true)
+      }
+      {
         const result = _.inRange(10, 0, 10, 'end-exclusive')
         expect(result).toBe(false)
       }

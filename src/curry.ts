@@ -49,6 +49,9 @@ export function pipe<T = any, R = any>(
 ): UnaryFunc<T, R>
 
 /**
+ * @category Curry
+ *
+ * @description
  * Creates pipeline of functions to be applied to a value
  * First function can receive any number of arguments
  * Subsequent functions can only receive one argument - the result of the previous function
@@ -71,6 +74,12 @@ export function pipe(fn1: Func, ...fns: Func[]) {
 
 type Cache<T> = Record<string, { exp: number | null; value: T }>
 
+/**
+ * @category Curry
+ *
+ * @description
+ * Creates a memoized version of a function
+ */
 const memoize = <T>(
   cache: Cache<T>,
   func: Func<any, T>,
@@ -96,6 +105,9 @@ const memoize = <T>(
 }
 
 /**
+ * @category Curry
+ *
+ * @description
  * Creates a memoized function. The returned function
  * will only execute the source function when no value
  * has previously been computed. If a ttl (milliseconds)
@@ -159,6 +171,9 @@ export type ThrottledFunction<TArgs extends any[]> = {
 }
 
 /**
+ * @category Curry
+ *
+ * @description
  * Given a delay and a function returns a new function
  * that will only call the source function after delay
  * milliseconds have passed without any invocations.
@@ -204,6 +219,9 @@ export const debounce = <TArgs extends any[]>(
 }
 
 /**
+ * @category Curry
+ *
+ * @description
  * Given an interval and a function returns a new function
  * that will only call the source function if interval milliseconds
  * have passed since the last invocation

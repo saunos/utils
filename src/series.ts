@@ -1,6 +1,9 @@
 import { list } from './array'
 
 /**
+ * @category Series
+ *
+ * @description
  * Creates a series object around a list of values
  * that should be treated with order.
  *
@@ -45,7 +48,7 @@ import { list } from './array'
  * weekdays.previous({ day: 'tuesday' }) // => { day: 'monday' }
  */
 export const series = <T>(
-  items: T[] | readonly T[],
+  items: readonly T[],
   toKey: (item: T) => string | symbol = item => `${item}`
 ) => {
   const { indexesByKey, itemsByIndex } = (items as T[]).reduce(

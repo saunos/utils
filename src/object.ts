@@ -3,6 +3,9 @@ import { toInt } from './number'
 import { isArray, isObject, isPrimitive } from './typed'
 
 /**
+ * @category Object
+ *
+ * @description
  * Removes (shakes out) undefined entries from an
  * object. Optional second argument shakes out values
  * by custom evaluation.
@@ -18,7 +21,7 @@ import { isArray, isObject, isPrimitive } from './typed'
  * shake(ra, a => !a) // => { mode }
  */
 export const shake = <RemovedKeys extends string, T>(
-  obj: T,
+  obj: Readonly<T>,
   filter: (value: unknown) => boolean = x => x === undefined
 ): Omit<T, RemovedKeys> => {
   if (!obj) return {} as T
@@ -33,6 +36,9 @@ export const shake = <RemovedKeys extends string, T>(
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * Map over all the keys of an object to return
  * a new object
  *
@@ -50,7 +56,7 @@ export const mapKeys = <
   TKey extends string | number | symbol,
   TNewKey extends string | number | symbol
 >(
-  obj: Record<TKey, TValue>,
+  obj: Readonly<Record<TKey, TValue>>,
   mapFunc: (key: TKey, value: TValue) => TNewKey
 ): Record<TNewKey, TValue> => {
   const keys = Object.keys(obj) as TKey[]
@@ -64,6 +70,9 @@ export const mapKeys = <
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * Map over all the keys to create a new object
  *
  * @example
@@ -80,7 +89,7 @@ export const mapValues = <
   TKey extends string | number | symbol,
   TNewValue
 >(
-  obj: Record<TKey, TValue>,
+  obj: Readonly<Record<TKey, TValue>>,
   mapFunc: (value: TValue, key: TKey) => TNewValue
 ): Record<TKey, TNewValue> => {
   const keys = Object.keys(obj) as TKey[]
@@ -94,6 +103,9 @@ export const mapValues = <
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * Map over all the keys to create a new object
  *
  * @example
@@ -112,7 +124,7 @@ export const mapEntries = <
   TNewKey extends string | number | symbol,
   TNewValue
 >(
-  obj: Record<TKey, TValue>,
+  obj: Readonly<Record<TKey, TValue>>,
   toEntry: (key: TKey, value: TValue) => [TNewKey, TNewValue]
 ): Record<TNewKey, TNewValue> => {
   if (!obj) return {} as Record<TNewKey, TNewValue>
@@ -127,6 +139,9 @@ export const mapEntries = <
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * Returns an object with { [keys]: value }
  * inverted as { [value]: key }
  *
@@ -143,7 +158,7 @@ export const invert = <
   TKey extends string | number | symbol,
   TValue extends string | number | symbol
 >(
-  obj: Record<TKey, TValue>
+  obj: Readonly<Record<TKey, TValue>>
 ): Record<TValue, TKey> => {
   if (!obj) return {} as Record<TValue, TKey>
   const keys = Object.keys(obj) as TKey[]
@@ -157,6 +172,9 @@ export const invert = <
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * Creates a shallow copy of the given obejct/value.
  *
  * @example
@@ -198,6 +216,9 @@ export const clone = <T>(obj: T): T => {
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * Convert an object to a list, mapping each entry
  * into a list item
  *
@@ -214,7 +235,7 @@ export const clone = <T>(obj: T): T => {
  * listify(fish, (key, value) => ({ ...value, name: key })) // => [{ name: 'marlin', weight: 105 }, { name: 'bass', weight: 8 }]
  */
 export const listify = <TValue, TKey extends string | number | symbol, KResult>(
-  obj: Record<TKey, TValue>,
+  obj: Readonly<Record<TKey, TValue>>,
   toItem: (key: TKey, value: TValue) => KResult
 ) => {
   if (!obj) return []
@@ -230,6 +251,9 @@ export const listify = <TValue, TKey extends string | number | symbol, KResult>(
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * Pick a list of properties from an object
  * into a new object
  *
@@ -244,7 +268,7 @@ export const listify = <TValue, TKey extends string | number | symbol, KResult>(
  * pick(fish, ['name', 'source']) // => { name, source }
  */
 export const pick = <T extends object, TKeys extends keyof T>(
-  obj: T,
+  obj: Readonly<T>,
   keys: TKeys[]
 ): Pick<T, TKeys> => {
   if (!obj) return {} as Pick<T, TKeys>
@@ -258,6 +282,9 @@ export const pick = <T extends object, TKeys extends keyof T>(
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * Omit a list of properties from an object
  * returning a new object with the properties
  * that remain
@@ -274,7 +301,7 @@ export const pick = <T extends object, TKeys extends keyof T>(
  * omit(fish, ['name', 'source']) // => { weight, brackish }
  */
 export const omit = <T, TKeys extends keyof T>(
-  obj: T,
+  obj: Readonly<T>,
   keys: TKeys[]
 ): Omit<T, TKeys> => {
   if (!obj) return {} as Omit<T, TKeys>
@@ -293,6 +320,9 @@ export const omit = <T, TKeys extends keyof T>(
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * Dynamically get a nested value from an array or
  * object with a string.
  *
@@ -316,6 +346,9 @@ export const get = <TDefault = unknown>(
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * Opposite of get, dynamically set a nested value into
  * an object using a key path. Does not modify the given
  * initial object.
@@ -352,9 +385,15 @@ export const set = <T extends object, K>(
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * Merges two objects together recursivly into a new
  * object applying values from right to left.
  * Recursion only applies to child object properties.
+ *
+ * @deprecated
+ * Use `Object.assign` instead
  *
  * @example
  * const ra = {
@@ -388,6 +427,9 @@ export const assign = <X extends Record<string | symbol | number, any>>(
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * Get a string list of all key names that exist in
  * an object (deep).
  *
@@ -413,7 +455,10 @@ export const keys = <TValue extends object>(value: TValue): string[] => {
 }
 
 /**
- * Flattens a deep object to a single demension, converting
+ * @category Object
+ *
+ * @description
+ * Flattens a deep object to a single dimension, converting
  * the keys to dot notation.
  *
  * @example
@@ -430,6 +475,9 @@ export const crush = <TValue extends object>(value: TValue): object => {
 }
 
 /**
+ * @category Object
+ *
+ * @description
  * The opposite of crush, given an object that was
  * crushed into key paths and values will return
  * the original object reconstructed.

@@ -6,19 +6,21 @@ const NULL = null as unknown as {}
 describe('object module', () => {
   describe('shake function', () => {
     test('removes all undefined values', () => {
-      const result = _.shake({
+      const src = {
         x: 2,
         y: null,
         z: undefined,
         o: false,
         r: 'x'
-      })
+      }
+      const result = _.shake(src)
       expect(result).toEqual({
         x: 2,
         y: null,
         o: false,
         r: 'x'
       })
+      expect(result).not.toBe(src)
     })
     test('removes values based on filter function input', () => {
       const result = _.shake(
@@ -36,6 +38,7 @@ describe('object module', () => {
       })
     })
     test('handles undefined input', () => {
+      // @ts-ignore
       const result = _.shake(undefined)
       expect(result).toEqual({})
     })
@@ -240,6 +243,7 @@ describe('object module', () => {
       const obj = Object.create(null)
       obj.a = 2
       obj.b = 4
+      // @ts-ignore
       const result = _.pick(obj, ['a'])
       expect(result).toEqual({
         a: 2
@@ -263,7 +267,7 @@ describe('object module', () => {
       active: true
     }
     test('handles null input', () => {
-      const result = _.omit(null, [])
+      const result = _.omit(null as any, [])
       expect(result).toEqual({})
     })
     test('handles empty keys', () => {

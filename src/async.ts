@@ -2,12 +2,14 @@ import { fork, list, range, sort } from './array'
 import { isArray, isPromise } from './typed'
 
 /**
+ * @category Async
+ *
+ * @description
  * An async reduce function. Works like the
  * built-in Array.reduce function but handles
  * an async reducer function
  *
  * @example
- *
  * const userIds = [1, 2, 3, 4]
  *
  * const users = await reduce(userIds, async (acc, userId) => {
@@ -36,6 +38,9 @@ export const reduce = async <T, K>(
 }
 
 /**
+ * @category Async
+ *
+ * @description
  * An async map function. Works like the
  * built-in Array.map function but handles
  * an async mapper function
@@ -63,6 +68,9 @@ export const map = async <T, K>(
 }
 
 /**
+ * @category Async
+ *
+ * @description
  * Useful when for script like things where cleanup
  * should be done on fail or sucess no matter.
  *
@@ -70,6 +78,7 @@ export const map = async <T, K>(
  * defered functions that will all be called when
  * the function exits in any state.
  *
+ * @example
  * await defer(async (cleanup) => {
  *   const buildDir = await createBuildDir()
  *
@@ -124,6 +133,9 @@ type WorkItemResult<K> = {
 }
 
 /**
+ * @category Async
+ *
+ * @description
  * Support for the built-in AggregateError
  * is still new. Node < 15 doesn't have it
  * so patching here.
@@ -144,6 +156,9 @@ export class AggregateError extends Error {
 }
 
 /**
+ * @category Async
+ *
+ * @description
  * Executes many async functions in parallel. Returns the
  * results from all functions as an array. After all functions
  * have resolved, if any errors were thrown, they are rethrown
@@ -210,6 +225,9 @@ type PromiseValues<T extends Promise<any>[]> = {
 }
 
 /**
+ * @category Async
+ *
+ * @description
  * Functionally similar to Promise.all or Promise.allSettled. If any
  * errors are thrown, all errors are gathered and thrown in an
  * AggregateError.
@@ -227,7 +245,11 @@ export async function all<T extends [Promise<any>, ...Promise<any>[]]>(
 export async function all<T extends Promise<any>[]>(
   promises: T
 ): Promise<PromiseValues<T>>
+
 /**
+ * @category Async
+ *
+ * @description
  * Functionally similar to Promise.all or Promise.allSettled. If any
  * errors are thrown, all errors are gathered and thrown in an
  * AggregateError.
@@ -278,6 +300,9 @@ export async function all<
 }
 
 /**
+ * @category Async
+ *
+ * @description
  * Retries the given function the specified number
  * of times.
  *
@@ -318,16 +343,25 @@ export const retry = async <TResponse>(
 }
 
 /**
+ * @category Async
+ *
+ * @description
  * Async wait
  *
  * @example
  * await sleep(2000) // => waits 2 seconds
  */
-export const sleep = (milliseconds: number) => {
-  return new Promise(res => setTimeout(res, milliseconds))
+export const sleep = (milliseconds: number, cb?: () => void) => {
+  return new Promise(res => {
+    setTimeout(res, milliseconds)
+    cb?.()
+  })
 }
 
 /**
+ * @category Async
+ *
+ * @description
  * A helper to try an async function without forking
  * the control flow. Returns an error first callback _like_
  * array response as [Error, result]
@@ -364,10 +398,14 @@ export const tryit = <Args extends any[], Return>(
 }
 
 /**
+ * @category Async
+ *
+ * @description
  * A helper to try an async function that returns undefined
  * if it fails.
  *
- * e.g. const result = await guard(fetchUsers)() ?? [];
+ * @example
+ * const result = await guard(fetchUsers)() ?? [];
  */
 export const guard = <TFunction extends () => any>(
   func: TFunction,

@@ -15,7 +15,7 @@ export {
   max,
   merge,
   min,
-  mutableRemove,
+  removeMut,
   objectify,
   range,
   replace,
@@ -24,6 +24,7 @@ export {
   sort,
   sum,
   toggle,
+  toggleMut,
   unique,
   zip,
   zipToObject
@@ -78,6 +79,8 @@ export {
   trim
 } from './string'
 export {
+  assert,
+  assertNotNull,
   isArray,
   isDate,
   isEmpty,

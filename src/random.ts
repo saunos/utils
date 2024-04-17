@@ -1,6 +1,9 @@
 import { list } from './array'
 
 /**
+ * @category Random
+ *
+ * @description
  * Generates a random number between min and max
  *
  * @example
@@ -11,6 +14,9 @@ export const random = (min: number, max: number) => {
 }
 
 /**
+ * @category Random
+ *
+ * @description
  * Draw a random item from a list. Returns
  * null if the list is empty
  *
@@ -29,7 +35,11 @@ export const draw = <T>(array: readonly T[]): T | null => {
 }
 
 /**
+ * @category Random
+ *
+ * @description
  * Randomly shuffle an array
+ *
  * @example
  *  const fish = [
  *   {
@@ -59,7 +69,11 @@ export const shuffle = <T>(array: readonly T[]): T[] => {
 }
 
 /**
+ * @category Random
+ *
+ * @description
  * Generates a unique string with optional special characters.
+ *
  * @example
  * uid(7) // => UaOKdlW
  * uid(20, '*') // => dyJdbC*NsEgcnGjTHS
