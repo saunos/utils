@@ -1,20 +1,30 @@
+/**
+ * @category Typed
+ */
 export const isSymbol = (value: any): value is symbol => {
   return !!value && value.constructor === Symbol
 }
 
+/**
+ * @category Typed
+ */
 export const isArray = Array.isArray
 
+/**
+ * @category Typed
+ */
 export const isObject = (value: any): value is object => {
   return !!value && value.constructor === Object
 }
 
 /**
+ * @category Typed
+ *
+ * @description
  * Checks if the given value is primitive.
  *
+ * @remarks
  * Primitive Types: number , string , boolean , symbol, bigint, undefined, null
- *
- * @param {*} value value to check
- * @returns {boolean} result
  */
 export const isPrimitive = (value: any): boolean => {
   return (
@@ -24,23 +34,38 @@ export const isPrimitive = (value: any): boolean => {
   )
 }
 
+/**
+ * @category Typed
+ */
 // biome-ignore lint/complexity/noBannedTypes: <explanation>
 export const isFunction = (value: any): value is Function => {
   return !!(value?.constructor && value.call && value.apply)
 }
 
+/**
+ * @category Typed
+ */
 export const isString = (value: any): value is string => {
   return typeof value === 'string' || value instanceof String
 }
 
+/**
+ * @category Typed
+ */
 export const isInt = (value: any): value is number => {
   return isNumber(value) && value % 1 === 0
 }
 
+/**
+ * @category Typed
+ */
 export const isFloat = (value: any): value is number => {
   return isNumber(value) && value % 1 !== 0
 }
 
+/**
+ * @category Typed
+ */
 export const isNumber = (value: any): value is number => {
   try {
     return Number(value) === value
@@ -49,11 +74,17 @@ export const isNumber = (value: any): value is number => {
   }
 }
 
+/**
+ * @category Typed
+ */
 export const isDate = (value: any): value is Date => {
   return Object.prototype.toString.call(value) === '[object Date]'
 }
 
 /**
+ * @category Typed
+ *
+ * @description
  * This is really a _best guess_ promise checking. You
  * should probably use Promise.resolve(value) to be 100%
  * sure you're handling it correctly.
@@ -65,6 +96,9 @@ export const isPromise = (value: any): value is Promise<any> => {
   return true
 }
 
+/**
+ * @category Typed
+ */
 export const isEmpty = (value: any) => {
   if (value === true || value === false) return true
   if (value === null || value === undefined) return true
@@ -80,6 +114,9 @@ export const isEmpty = (value: any) => {
   return keys === 0
 }
 
+/**
+ * @category Typed
+ */
 export const isEqual = <TType>(x: TType, y: TType): boolean => {
   if (Object.is(x, y)) return true
   if (x instanceof Date && y instanceof Date) {
@@ -106,12 +143,24 @@ export const isEqual = <TType>(x: TType, y: TType): boolean => {
   return true
 }
 
+/**
+ * @category Typed
+ *
+ * @description
+ * Asserts that the given condition is true, otherwise throws an error.
+ */
 export function assert(condition: any, msg?: string): asserts condition {
   if (!condition) {
     throw new Error(msg)
   }
 }
 
+/**
+ * @category Typed
+ *
+ * @description
+ * Asserts that the given value is not null or undefined, otherwise throws an error.
+ */
 export function assertNotNull<T>(
   value: T,
   msg?: string
@@ -119,4 +168,11 @@ export function assertNotNull<T>(
   if (value === null || value === undefined) {
     throw new Error(msg)
   }
+}
+
+/**
+ * @category Typed
+ */
+export function assertNever(value: never): never {
+  throw new Error(`Unexpected object: ${value}`)
 }

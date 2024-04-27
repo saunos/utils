@@ -566,4 +566,23 @@ describe('typed module', () => {
       expect(() => _.assertNotNull(0, 'error message')).not.toThrow()
     })
   })
+
+  describe('assertNever function', () => {
+    test('throws error', () => {
+      type A = { type: 'a' }
+      type B = { type: 'b' }
+      type Union = A | B
+
+      function doSomething(arg: Union) {
+        if (arg.type === 'a') {
+          return true
+        }
+
+        // @ts-expect-error
+        return _.assertNever(arg)
+      }
+
+      expect(() => doSomething({ type: 'b' })).toThrow()
+    })
+  })
 })

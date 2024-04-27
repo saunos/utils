@@ -319,11 +319,13 @@ describe('object module', () => {
     test('returns specified value or default using path', () => {
       expect(_.get({ age: undefined }, 'age', 22)).toBe(22)
       expect(_.get(jay, 'friends[0].age')).toBe(17)
+      expect(_.get(jay, 'friends["0"].age')).toBe(17)
       expect(_.get(jay, 'friends.0.age')).toBe(17)
       expect(_.get(jay, 'friends.1.age')).toBe(undefined)
       expect(_.get(jay, 'friends.0.friends[0].name')).toBe('sara')
       expect(_.get(jay, 'name')).toBe('jay')
       expect(_.get(jay, '[name]')).toBe('jay')
+      expect(_.get(jay, '["name"]')).toBe('jay')
       expect(_.get(jay, 'friends[0][name]')).toBe('carl')
       expect(_.get(jay, 'friends[0].friends[0].friends[0].age', 22)).toBe(22)
     })
