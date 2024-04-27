@@ -97,7 +97,7 @@ describe('array module', () => {
       expect(result).toBe(22)
     })
     test('gracefully handles null input list', () => {
-      const result = _.sum(null as unknown as readonly (number | object)[])
+      const result = _.sum(null as unknown as readonly number[])
       expect(result).toBe(0)
     })
   })

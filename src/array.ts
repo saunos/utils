@@ -132,14 +132,16 @@ export const boil = <T>(
  * @example
  * sum([1, 2, 3]) // => 6
  */
-export const sum = <T extends number | object>(
+export function sum<T extends number>(array: readonly T[]): number
+export function sum<T extends object>(
   array: readonly T[],
+  fn: (item: T) => number
+): number
+export function sum<T extends object | number>(
+  array: readonly any[],
   fn?: (item: T) => number
-) => {
-  return (array || []).reduce(
-    (acc, item) => acc + (fn ? fn(item) : (item as number)),
-    0
-  )
+): number {
+  return (array || []).reduce((acc, item) => acc + (fn ? fn(item) : item), 0)
 }
 
 /**
@@ -435,13 +437,14 @@ export function min<T>(
  * lists with 2 items each
  *
  * @example
- * const gods = ['Ra', 'Zeus', 'Loki', 'Vishnu', 'Icarus', 'Osiris', 'Thor']
+ * const gods = ['Ra', 'Zeus', 'Loki', 'Vishnu', 'Icarus', 'Osiris', 'Thor', 'Apollo', 'Artemis', 'Athena']
  *
  * cluster(gods, 3)
  * // => [
  * //   [ 'Ra', 'Zeus', 'Loki' ],
  * //   [ 'Vishnu', 'Icarus', 'Osiris' ],
- * //   [ 'Thor' ]
+ * //   [ 'Thor', 'Apollo', 'Artemis' ],
+ * //   [ 'Athena' ]
  * // ]
  */
 export const cluster = <T>(list: readonly T[], size = 2): T[][] => {
@@ -852,7 +855,10 @@ export const toggle = <T>(
  * @description
  * If the item matching the condition already exists
  * in the list it will be removed. If it does not it
- * will be added. This function **mutates** the list.
+ * will be added.
+ *
+ * @remarks
+ * Mutates the array
  *
  * @example
  * const gods = ['ra', 'zeus', 'loki']
@@ -960,12 +966,15 @@ export function shift<T>(arr: Array<T>, n: number) {
  * @category Array
  *
  * @description
- * Remove an item from an array. It mutates the array
+ * Remove an item from an array.
+ *
+ * @remarks
+ * Mutates the array
  *
  * @example
  * const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
  * const success = removeMut(arr, i => i === 5) // => [1, 2, 3, 4, 6, 7, 8, 9]
- * success // => true
+ * success // => 5
  */
 export function removeMut<T>(
   arr: Array<T>,

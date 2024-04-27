@@ -80,6 +80,7 @@ export {
 } from './string'
 export {
   assert,
+  assertNever,
   assertNotNull,
   isArray,
   isDate,
