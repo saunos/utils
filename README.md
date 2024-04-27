@@ -22,7 +22,7 @@
 </p>
 
 ## Docs
-Can be found [here](https://tsdocs.dev/)
+Can be found [here](https://tsdocs.dev/docs/@saunos/utils/latest/index.html)
 
 ## Install
 
@@ -35,7 +35,7 @@ npm install @saunos/utils
 A very brief kitchen sink.
 
 ```ts
-import * as _ from 'radash'
+import * as _ from '@saunos/utils'
 
 const gods = [{
   name: 'Ra',
