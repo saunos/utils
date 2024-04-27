@@ -27,12 +27,12 @@ Scan through the [existing issues](https://github.com/rayepps/radash/issues) to 
 
 ## You're ready to push a change?
 
-Once you've made your changes on a fork of the radash repo, create a pull request to the `master` branch of the [radash](https://github.com/rayepps/radash) repository.
+Once you've made your changes on a fork of the radash repo, create a pull request to the `main` branch of the [@saunos/utils](https://github.com/saunos/utils) repository.
 - Be sure to fill in a description that lets readers and reviewers understand both the implementation and intent of your changes.
 - Don't forget to [link the PR to an issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue) if you are solving one.
 - Enable the checkbox to [allow maintainer edits](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/allowing-changes-to-a-pull-request-branch-created-from-a-fork) so the branch can be updated for a merge.
 
-Once you submit your PR, I (@rayepps) will review it. I might ask questions or request additional information.
+Once you submit your PR, I (@mkatrenik) will review it. I might ask questions or request additional information.
 
 ## Your PR gets merged!
 
