@@ -38,8 +38,8 @@ export {
   reduce,
   retry,
   sleep,
-  tryit as try,
-  tryit
+  tryIt,
+  tryOptional
 } from './async'
 export type { AggregateError } from './async'
 export {

@@ -228,9 +228,9 @@ describe('async module', () => {
     })
   })
 
-  describe('_.try function', () => {
+  describe('_.tryIt function', () => {
     test('returns error when error is thrown', async () => {
-      const fn = _.try(async () => {
+      const fn = _.tryIt(async () => {
         throw new Error('not good enough')
       })
       const [err, result] = await fn()
@@ -239,7 +239,7 @@ describe('async module', () => {
       expect(err!.message).toBe('not good enough')
     })
     test('returns result when no error is thrown', async () => {
-      const [err, result] = await _.try(async () => {
+      const [err, result] = await _.tryIt(async () => {
         return 'hello'
       })()
       expect(result).not.toBeNull()
@@ -247,7 +247,7 @@ describe('async module', () => {
       expect(result).toBe('hello')
     })
     test('handles non-async function results', async () => {
-      const [err, result] = _.try(() => {
+      const [err, result] = _.tryIt(() => {
         return 'hello'
       })()
       expect(result).not.toBeNull()
@@ -255,7 +255,7 @@ describe('async module', () => {
       expect(result).toBe('hello')
     })
     test('handles non-async function errors', async () => {
-      const [err, result] = _.try(() => {
+      const [err, result] = _.tryIt(() => {
         if (1 < 0) return ''
         throw new Error('unknown')
       })()
@@ -263,8 +263,8 @@ describe('async module', () => {
       expect(err).not.toBeNull()
       expect(err!.message).toBe('unknown')
     })
-    test('alias exists', () => {
-      expect(_.tryit).not.toBeNull()
+    test('_.tryOptional alias', () => {
+      expect(_.tryOptional).toBe(_.guard)
     })
   })
 
@@ -326,7 +326,7 @@ describe('async module', () => {
 
   describe('_.parallel function', () => {
     test('returns all results from all functions', async () => {
-      const [errors, results] = await _.try(async () => {
+      const [errors, results] = await _.tryIt(async () => {
         return _.parallel(1, _.list(1, 3), async num => {
           await _.sleep(1000, () => jest.advanceTimersByTimeAsync(1000))
           return `hi_${num}`
@@ -336,7 +336,7 @@ describe('async module', () => {
       expect(results).toEqual(['hi_1', 'hi_2', 'hi_3'])
     })
     test('throws erros as array of all errors', async () => {
-      const [error, results] = await _.try(async () => {
+      const [error, results] = await _.tryIt(async () => {
         return _.parallel(1, _.list(1, 3), async num => {
           await _.sleep(1000, () => jest.advanceTimersByTimeAsync(1000))
           if (num === 2) throw new Error('number is 2')

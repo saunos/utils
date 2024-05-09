@@ -117,9 +117,9 @@ export const defer = async <TResponse>(
       fn,
       rethrow: options?.rethrow ?? false
     })
-  const [err, response] = await tryit(func)(register)
+  const [err, response] = await tryIt(func)(register)
   for (const { fn, rethrow } of callbacks) {
-    const [rethrown] = await tryit(fn)(err)
+    const [rethrown] = await tryIt(fn)(err)
     if (rethrown && rethrow) throw rethrown
   }
   if (err) throw err
@@ -198,7 +198,7 @@ export const parallel = async <T, K>(
     while (true) {
       const next = work.pop()
       if (!next) return res(results)
-      const [error, result] = await tryit(func)(next.item)
+      const [error, result] = await tryIt(func)(next.item)
       results.push({
         error,
         result: result as K,
@@ -326,7 +326,7 @@ export const retry = async <TResponse>(
   const delay = options?.delay
   const backoff = options?.backoff ?? null
   for (const i of range(1, times)) {
-    const [err, result] = (await tryit(func)((err: any) => {
+    const [err, result] = (await tryIt(func)((err: any) => {
       throw { _exited: err }
     })) as [any, TResponse]
     if (!err) return result
@@ -369,7 +369,7 @@ export const sleep = (milliseconds: number, cb?: () => void) => {
  * @example
  * const [err, user] = await tryit(api.users.find)(userId)
  */
-export const tryit = <Args extends any[], Return>(
+export const tryIt = <Args extends any[], Return>(
   func: (...args: Args) => Return
 ) => {
   return (
@@ -406,6 +406,11 @@ export const tryit = <Args extends any[], Return>(
  *
  * @example
  * const result = await guard(fetchUsers)() ?? [];
+ *
+ * @alias tryOptional
+ *
+ * @param func - The function to guard
+ * @param shouldGuard - A function that returns true if the error should be guarded
  */
 export const guard = <TFunction extends () => any>(
   func: TFunction,
@@ -426,3 +431,8 @@ export const guard = <TFunction extends () => any>(
     return _guard(err)
   }
 }
+
+/**
+ * @alias guard
+ */
+export const tryOptional = guard
