@@ -15,7 +15,7 @@ export {
   max,
   merge,
   min,
-  removeMut,
+  removeInPlace,
   objectify,
   range,
   replace,
@@ -23,8 +23,9 @@ export {
   shift,
   sort,
   sum,
+  toArray,
   toggle,
-  toggleMut,
+  toggleInPlace,
   unique,
   zip,
   zipToObject
@@ -42,12 +43,7 @@ export {
   tryOptional
 } from './async'
 export type { AggregateError } from './async'
-export {
-  pipe,
-  debounce,
-  memo,
-  throttle
-} from './curry'
+export { pipe, debounce, memo, throttle } from './curry'
 export { toFloat, toInt, inRange } from './number'
 export {
   assign,

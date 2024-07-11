@@ -862,12 +862,12 @@ export const toggle = <T>(
  *
  * @example
  * const gods = ['ra', 'zeus', 'loki']
- * toggleMut(gods, 'ra')     // => [zeus, loki]
+ * toggleInPlace(gods, 'ra')     // => [zeus, loki]
  *
  * const gods = ['zeus', 'loki']
- * toggleMut(gods, 'ra')     // => [zeus, loki, ra]
+ * toggleInPlace(gods, 'ra')     // => [zeus, loki, ra]
  */
-export function toggleMut<T extends {}>(
+export function toggleInPlace<T extends {}>(
   list: T[],
   item: T,
   // toKey?: null | ((item: T, idx: number) => number | string | symbol),
@@ -973,14 +973,29 @@ export function shift<T>(arr: Array<T>, n: number) {
  *
  * @example
  * const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
- * const success = removeMut(arr, i => i === 5) // => [1, 2, 3, 4, 6, 7, 8, 9]
+ * const success = removeInPlace(arr, i => i === 5) // => [1, 2, 3, 4, 6, 7, 8, 9]
  * success // => 5
  */
-export function removeMut<T>(
+export function removeInPlace<T>(
   arr: Array<T>,
   predicate: (item: T) => boolean
 ): false | T[] {
   const index = arr.findIndex(predicate)
   if (index === -1) return false
   return arr.splice(index, 1)
+}
+
+/**
+ * @category Array
+ *
+ * @description
+ * Converts a value or an array of values to an array.
+ *
+ * @example
+ * toArray(1) // => [1]
+ * toArray([1, 2]) // => [1, 2]
+ */
+export function toArray<T>(value: T | T[]): T[] {
+  if (value === undefined || value === null) return []
+  return Array.isArray(value) ? value : [value]
 }

@@ -389,48 +389,6 @@ export const set = <T extends object, K>(
  * @category Object
  *
  * @description
- * Merges two objects together recursivly into a new
- * object applying values from right to left.
- * Recursion only applies to child object properties.
- *
- * @deprecated
- * Use `Object.assign` instead
- *
- * @example
- * const ra = {
- *   name: 'Ra',
- *   power: 100
- * }
- *
- * assign(ra, { name: 'Loki' })
- * // => { name: Loki, power: 100 }
- */
-
-export const assign = <X extends Record<string | symbol | number, any>>(
-  initial: X,
-  override: X
-): X => {
-  if (!initial || !override) return initial ?? override ?? {}
-
-  return Object.entries({ ...initial, ...override }).reduce(
-    (acc, [key, value]) => {
-      return {
-        ...acc,
-        [key]: (() => {
-          if (isObject(initial[key])) return assign(initial[key], value)
-          // if (isArray(value)) return value.map(x => assign)
-          return value
-        })()
-      }
-    },
-    {} as X
-  )
-}
-
-/**
- * @category Object
- *
- * @description
  * Get a string list of all key names that exist in
  * an object (deep).
  *
@@ -492,4 +450,33 @@ export const construct = <TObject extends object>(obj: TObject): object => {
   return Object.keys(obj).reduce((acc, path) => {
     return set(acc, path, (obj as any)[path])
   }, {})
+}
+
+/**
+ * @category Object
+ *
+ * @description
+ * Wrapper over Object.assign to merge multiple objects with proper typing.
+ *
+ * @example
+ * const ra = {
+ *   name: 'Ra',
+ *   power: 100
+ * }
+ *
+ * assign(ra, { name: 'Loki' })
+ * // => { name: Loki, power: 100 }
+ */
+// export declare function assign<A, B>(a: A, b: B): A & B;
+export function assign<A, B, C, D, E, F, G, H>(
+  a: A,
+  b?: B,
+  c?: C,
+  d?: D,
+  e?: E,
+  f?: F,
+  g?: G,
+  h?: H
+): A & B & C & D & E & F & G & H {
+  return Object.assign({}, a, b, c, d, e, f, g, h)
 }
