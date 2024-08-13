@@ -43,6 +43,7 @@ export {
   tryOptional
 } from './async'
 export type { AggregateError } from './async'
+export type { ExtractProps } from './class'
 export { pipe, debounce, memo, throttle } from './curry'
 export { toFloat, toInt, inRange } from './number'
 export {
