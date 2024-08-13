@@ -22,7 +22,7 @@
 </p>
 
 ## Docs
-Can be found [here](https://tsdocs.dev/docs/@saunos/utils/latest/index.html)
+Can be found [here](https://saunos.github.io/utils/)
 
 ## Install
 
