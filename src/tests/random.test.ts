@@ -1,4 +1,6 @@
-import * as _ from '..'
+import { describe, expect, test } from 'bun:test'
+import { sum } from '../math'
+import * as _ from '../random'
 
 describe('random module', () => {
   describe('random function', () => {
@@ -41,9 +43,9 @@ describe('random module', () => {
     })
     test('returns list with same value', () => {
       const list = [1, 2, 3, 4, 5]
-      const totalBefore = _.sum(list)
+      const totalBefore = sum(list)
       const result = _.shuffle(list)
-      const totalAfter = _.sum(result)
+      const totalAfter = sum(result)
       expect(totalBefore).toBe(totalAfter)
     })
     test('returns copy of list without mutatuing input', () => {

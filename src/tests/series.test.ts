@@ -1,4 +1,5 @@
-import * as _ from '..'
+import { describe, expect, test } from 'bun:test'
+import * as _ from '../series'
 
 describe('series module', () => {
   const sut = _.series([

@@ -1,98 +1,81 @@
-import * as _ from '..'
+import { describe, expect, test } from 'bun:test'
+import * as _ from '../string'
 
 describe('string module', () => {
   describe('camel function', () => {
     test('returns correctly cased string', () => {
-      const result = _.camel('hello world')
+      const result = _.camelCase('hello world')
       expect(result).toBe('helloWorld')
     })
     test('returns single word', () => {
-      const result = _.camel('hello')
+      const result = _.camelCase('hello')
       expect(result).toBe('hello')
     })
-    test('returns empty string for empty input', () => {
-      const result = _.camel(null as any)
-      expect(result).toBe('')
-    })
     test('a word in camel case should remain in camel case', () => {
-      const result = _.camel('helloWorld')
+      const result = _.camelCase('helloWorld')
       expect(result).toBe('helloWorld')
     })
   })
 
   describe('camelCase function', () => {
     test('returns non alphanumerics with -space and capital', () => {
-      const result = _.camel('Exobase Starter_flash AND-go')
+      const result = _.camelCase('Exobase Starter_flash AND-go')
       expect(result).toBe('exobaseStarterFlashAndGo')
     })
   })
 
   describe('snake function', () => {
     test('returns correctly cased string', () => {
-      const result = _.snake('hello world')
+      const result = _.snakeCase('hello world')
       expect(result).toBe('hello_world')
     })
     test('must handle strings that are camelCase', () => {
-      const result = _.snake('helloWorld')
+      const result = _.snakeCase('helloWorld')
       expect(result).toBe('hello_world')
     })
     test('must handle strings that are dash', () => {
-      const result = _.snake('hello-world')
+      const result = _.snakeCase('hello-world')
       expect(result).toBe('hello_world')
     })
     test('splits numbers that are next to letters', () => {
-      const result = _.snake('hello-world12_19-bye')
+      const result = _.snakeCase('hello-world12_19-bye')
       expect(result).toBe('hello_world_12_19_bye')
     })
-    test('does not split numbers when flag is set to false', () => {
-      const result = _.snake('hello-world12_19-bye', {
-        splitOnNumber: false
-      })
-      expect(result).toBe('hello_world12_19_bye')
-    })
     test('returns single word', () => {
-      const result = _.snake('hello')
+      const result = _.snakeCase('hello')
       expect(result).toBe('hello')
-    })
-    test('returns empty string for empty input', () => {
-      const result = _.snake(null as any)
-      expect(result).toBe('')
     })
   })
 
   describe('snakeCase function', () => {
     test('returns non alphanumerics with _', () => {
-      const result = _.snake('Exobase Starter_flash AND-go')
+      const result = _.snakeCase('Exobase Starter_flash AND-go')
       expect(result).toBe('exobase_starter_flash_and_go')
     })
   })
 
   describe('dash function', () => {
     test('returns correctly cased string', () => {
-      const result = _.dash('hello world')
+      const result = _.kebabCase('hello world')
       expect(result).toBe('hello-world')
     })
     test('returns single word', () => {
-      const result = _.dash('hello')
+      const result = _.kebabCase('hello')
       expect(result).toBe('hello')
     })
-    test('returns empty string for empty input', () => {
-      const result = _.dash(null as any)
-      expect(result).toBe('')
-    })
     test('must handle strings that are camelCase', () => {
-      const result = _.dash('helloWorld')
+      const result = _.kebabCase('helloWorld')
       expect(result).toBe('hello-world')
     })
     test('must handle strings that are dash', () => {
-      const result = _.dash('hello-world')
+      const result = _.kebabCase('hello-world')
       expect(result).toBe('hello-world')
     })
   })
 
   describe('dashCase function', () => {
     test('returns non alphanumerics with -', () => {
-      const result = _.dash('Exobase Starter_flash AND-go')
+      const result = _.kebabCase('Exobase Starter_flash AND-go')
       expect(result).toBe('exobase-starter-flash-and-go')
     })
   })
@@ -134,10 +117,6 @@ describe('string module', () => {
   })
 
   describe('capitalize function', () => {
-    test('handles null', () => {
-      const result = _.capitalize(null as any)
-      expect(result).toBe('')
-    })
     test('converts hello as Hello', () => {
       const result = _.capitalize('hello')
       expect(result).toBe('Hello')
@@ -148,18 +127,14 @@ describe('string module', () => {
     })
   })
 
-  describe('pascal function', () => {
+  describe('pascalCase function', () => {
     test('returns non alphanumerics in pascal', () => {
-      const result = _.pascal('Exobase Starter_flash AND-go')
+      const result = _.pascalCase('Exobase Starter_flash AND-go')
       expect(result).toBe('ExobaseStarterFlashAndGo')
     })
     test('returns single word', () => {
-      const result = _.pascal('hello')
+      const result = _.pascalCase('hello')
       expect(result).toBe('Hello')
-    })
-    test('returns empty string for empty input', () => {
-      const result = _.pascal(null as any)
-      expect(result).toBe('')
     })
   })
 
@@ -180,12 +155,8 @@ describe('string module', () => {
   })
 
   describe('trim function', () => {
-    test('handles bad input', () => {
-      expect(_.trim(null)).toBe('')
-      expect(_.trim(undefined)).toBe('')
-    })
     test('returns input string correctly trimmed', () => {
-      expect(_.trim('\n\n\t\nhello\n\t  \n', '\n\t ')).toBe('hello')
+      expect(_.trim('\n\n\t\nhello\n\t  \n', ['\n', '\t', ' '])).toBe('hello')
       expect(_.trim('hello', 'x')).toBe('hello')
       expect(_.trim(' hello  ')).toBe('hello')
       expect(_.trim(' __hello__  ', '_')).toBe(' __hello__  ')
@@ -195,7 +166,7 @@ describe('string module', () => {
     })
 
     test('handles when char to trim is special case in regex', () => {
-      expect(_.trim('_- hello_- ', '_- ')).toBe('hello')
+      expect(_.trim('_- hello_- ', ['_', '-', ' '])).toBe('hello')
     })
   })
 })
