@@ -1,114 +1,40 @@
-/**
- * @category String
- *
- * @description
- * Capitalize the first word of the string
- *
- * @example
- * capitalize('hello')   -> 'Hello'
- * capitalize('va va voom') -> 'Va va voom'
- */
-export const capitalize = (str: string): string => {
-  if (!str || str.length === 0) return ''
-  const lower = str.toLowerCase()
-  return lower.substring(0, 1).toUpperCase() + lower.substring(1, lower.length)
-}
+import * as compat from 'es-toolkit/compat'
+import * as est from 'es-toolkit/string'
 
 /**
  * @category String
  *
- * @description
- * Formats the given string in camel case fashion
- *
- * @example
- * camel('hello world')   -> 'helloWorld'
- * camel('va va-VOOM') -> 'vaVaVoom'
- * camel('helloWorld') -> 'helloWorld'
+ * @alias {import('es-toolkit/string').capitalize}
  */
-export const camel = (str: string): string => {
-  const parts =
-    str
-      ?.replace(/([A-Z])+/g, capitalize)
-      ?.split(/(?=[A-Z])|[\.\-\s_]/)
-      .map(x => x.toLowerCase()) ?? []
-  if (parts.length === 0) return ''
-  if (parts.length === 1) return parts[0]
-  return parts.reduce((acc, part) => {
-    return `${acc}${part.charAt(0).toUpperCase()}${part.slice(1)}`
-  })
-}
+export const capitalize: typeof est.capitalize = est.capitalize
 
 /**
  * @category String
  *
- * @description
- * Formats the given string in snake case fashion
- *
- * @example
- * snake('hello world')   -> 'hello_world'
- * snake('va va-VOOM') -> 'va_va_voom'
- * snake('helloWord') -> 'hello_world'
+ * @alias {import('es-toolkit/string').camelCase}
  */
-export const snake = (
-  str: string,
-  options?: {
-    splitOnNumber?: boolean
-  }
-): string => {
-  const parts =
-    str
-      ?.replace(/([A-Z])+/g, capitalize)
-      .split(/(?=[A-Z])|[\.\-\s_]/)
-      .map(x => x.toLowerCase()) ?? []
-  if (parts.length === 0) return ''
-  if (parts.length === 1) return parts[0]
-  const result = parts.reduce((acc, part) => {
-    return `${acc}_${part.toLowerCase()}`
-  })
-  return options?.splitOnNumber === false
-    ? result
-    : result.replace(/([A-Za-z]{1}[0-9]{1})/, val => `${val[0]!}_${val[1]!}`)
-}
+export const camelCase: typeof est.camelCase = est.camelCase
 
 /**
  * @category String
  *
- * @description
- * Formats the given string in dash case fashion
- *
- * @example
- * dash('hello world')   -> 'hello-world'
- * dash('va va_VOOM') -> 'va-va-voom'
- * dash('helloWord') -> 'hello-word'
+ * @alias {import('es-toolkit/string').snake}
  */
-export const dash = (str: string): string => {
-  const parts =
-    str
-      ?.replace(/([A-Z])+/g, capitalize)
-      ?.split(/(?=[A-Z])|[\.\-\s_]/)
-      .map(x => x.toLowerCase()) ?? []
-  if (parts.length === 0) return ''
-  if (parts.length === 1) return parts[0]
-  return parts.reduce((acc, part) => {
-    return `${acc}-${part.toLowerCase()}`
-  })
-}
+export const snakeCase: typeof est.snakeCase = est.snakeCase
 
 /**
  * @category String
  *
- * @description
- * Formats the given string in pascal case fashion
- *
- * @example
- * pascal('hello world') -> 'HelloWorld'
- * pascal('va va boom') -> 'VaVaBoom'
+ * @alias {import('es-toolkit/string').kebabCase}
  */
-export const pascal = (str: string): string => {
-  const parts = str?.split(/[\.\-\s_]/).map(x => x.toLowerCase()) ?? []
-  if (parts.length === 0) return ''
-  return parts.map(str => str.charAt(0).toUpperCase() + str.slice(1)).join('')
-}
+export const kebabCase: typeof est.kebabCase = est.kebabCase
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').pascalCase}
+ */
+export const pascalCase: typeof est.pascalCase = est.pascalCase
 
 /**
  * @category String
@@ -146,8 +72,8 @@ export const title = (str: string | null | undefined): string => {
 export const template = (
   str: string,
   data: Record<string, any>,
-  regex = /\{\{(.+?)\}\}/g
-) => {
+  regex: RegExp = /\{\{(.+?)\}\}/g
+): string => {
   return Array.from(str.matchAll(regex)).reduce((acc, match) => {
     return acc.replace(match[0], data[match[1]])
   }, str)
@@ -156,21 +82,152 @@ export const template = (
 /**
  * @category String
  *
- * @description
- * Trims all prefix and suffix characters from the given
- * string. Like the builtin trim function but accepts
- * other characters you would like to trim and trims
- * multiple characters.
- *
- * @example
- * trim('  hello ') // => 'hello'
- * trim('__hello__', '_') // => 'hello'
- * trim('/repos/:owner/:repo/', '/') // => 'repos/:owner/:repo'
- * trim('222222__hello__1111111', '12_') // => 'hello'
+ * @alias {import('es-toolkit/compat').template}
  */
-export const trim = (str: string | null | undefined, charsToTrim = ' ') => {
-  if (!str) return ''
-  const toTrim = charsToTrim.replace(/[\W]{1}/g, '\\$&')
-  const regex = new RegExp(`^[${toTrim}]+|[${toTrim}]+$`, 'g')
-  return str.replace(regex, '')
-}
+export const estTemplate: typeof compat.template = compat.template
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').trim}
+ */
+export const trim: typeof est.trim = est.trim
+
+// ... existing imports and exports ...
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').constantCase}
+ */
+export const constantCase: typeof est.constantCase = est.constantCase
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').deburr}
+ */
+export const deburr: typeof est.deburr = est.deburr
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/compat').endsWith}
+ */
+export const endsWith: typeof compat.endsWith = compat.endsWith
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').escape}
+ */
+
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
+export const escape: typeof est.escape = est.escape
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').escapeRegExp}
+ */
+export const escapeRegExp: typeof est.escapeRegExp = est.escapeRegExp
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').lowerCase}
+ */
+export const lowerCase: typeof est.lowerCase = est.lowerCase
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').lowerFirst}
+ */
+export const lowerFirst: typeof est.lowerFirst = est.lowerFirst
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').pad}
+ */
+export const pad: typeof est.pad = est.pad
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/compat').padEnd}
+ */
+export const padEnd: typeof compat.padEnd = compat.padEnd
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/compat').padStart}
+ */
+export const padStart: typeof compat.padStart = compat.padStart
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/compat').repeat}
+ */
+export const repeat: typeof compat.repeat = compat.repeat
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/compat').replace}
+ */
+// export const replace = compat.replace
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').startCase}
+ */
+export const startCase: typeof est.startCase = est.startCase
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/compat').startsWith}
+ */
+export const startsWith: typeof compat.startsWith = compat.startsWith
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').trimEnd}
+ */
+export const trimEnd: typeof est.trimEnd = est.trimEnd
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').trimStart}
+ */
+export const trimStart: typeof est.trimStart = est.trimStart
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').unescape}
+ */
+
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
+export const unescape: typeof est.unescape = est.unescape
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').upperCase}
+ */
+export const upperCase: typeof est.upperCase = est.upperCase
+
+/**
+ * @category String
+ *
+ * @alias {import('es-toolkit/string').upperFirst}
+ */
+export const upperFirst: typeof est.upperFirst = est.upperFirst

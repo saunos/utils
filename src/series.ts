@@ -47,10 +47,18 @@ import { list } from './array'
  * weekdays.next({ day: 'wednesday' }) // => { day: 'thursday' }
  * weekdays.previous({ day: 'tuesday' }) // => { day: 'monday' }
  */
-export const series = <T>(
+export function series<T>(
   items: readonly T[],
   toKey: (item: T) => string | symbol = item => `${item}`
-) => {
+): {
+  min: (a: T, b: T) => T
+  max: (a: T, b: T) => T
+  first: () => T
+  last: () => T
+  next: (current: T, defaultValue?: T) => T
+  previous: (current: T, defaultValue?: T) => T
+  spin: (current: T, num: number) => T
+} {
   const { indexesByKey, itemsByIndex } = (items as T[]).reduce(
     (acc, item, idx) => ({
       indexesByKey: {

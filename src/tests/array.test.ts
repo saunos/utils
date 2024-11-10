@@ -1,9 +1,10 @@
-import * as _ from '..'
+import { describe, expect, test } from 'bun:test'
+import * as _ from '../array'
 
 const NULL = null as unknown as unknown[]
 
 describe('array module', () => {
-  describe('group function', () => {
+  describe('groupBy function', () => {
     test('groups by provided attribute', () => {
       const list = [
         { group: 'a', word: 'hello' },
@@ -12,7 +13,7 @@ describe('array module', () => {
         { group: 'b', word: 'hey' },
         { group: 'c', word: 'ok' }
       ]
-      const groups = _.group(list, x => x.group)
+      const groups = _.groupBy(list, x => x.group)
       expect(groups.a?.length).toBe(2)
       expect(groups.b?.length).toBe(2)
       expect(groups.c?.length).toBe(1)
@@ -29,20 +30,23 @@ describe('array module', () => {
         { game: 'd', score: 400 },
         { game: 'e', score: 500 }
       ]
-      const result = _.boil(list, (a, b) => (a.score > b.score ? a : b))
+      const result = _.boilDownTo(list, (a, b) => (a.score > b.score ? a : b))
       expect(result!.game).toBe('e')
       expect(result!.score).toBe(500)
     })
     test('does not fail when provided array is empty', () => {
-      const result = _.boil([], () => true)
+      const result = _.boilDownTo([], () => true)
       expect(result).toBeNull()
     })
     test('does not fail when provided array is null', () => {
-      const result = _.boil(null as unknown as readonly boolean[], () => true)
+      const result = _.boilDownTo(
+        null as unknown as readonly boolean[],
+        () => true
+      )
       expect(result).toBeNull()
     })
     test('does not fail when provided array is funky shaped', () => {
-      const result = _.boil({} as any, () => true)
+      const result = _.boilDownTo({} as any, () => true)
       expect(result).toBeNull()
     })
   })
@@ -55,113 +59,30 @@ describe('array module', () => {
         ['b', 2, false]
       ])
     })
-
-    test('returns an empty array if nothing is passed', () => {
-      const result = _.zip()
-      expect(result).toEqual([])
-    })
   })
 
-  describe('zipToObject function', () => {
+  describe('zipObject function', () => {
     test('zips to an object correctly', () => {
-      const result = _.zipToObject(['a', 'b'], [1, 2])
+      const result = _.zipObject(['a', 'b'], [1, 2])
       expect(result).toEqual({ a: 1, b: 2 })
     })
-
-    test('zips to an object with custom map function', () => {
-      const result = _.zipToObject(['a', 'b'], (k, i) => k + i)
-      expect(result).toEqual({ a: 'a0', b: 'b1' })
-    })
-
-    test('zips to an object with only one value', () => {
-      const result = _.zipToObject(['a', 'b'], 1)
-      expect(result).toEqual({ a: 1, b: 1 })
-    })
-
-    test('returns an empty object if bad parameters are passed', () => {
-      // @ts-ignore
-      const result = _.zipToObject()
-      expect(result).toEqual({})
-    })
   })
 
-  describe('sum function', () => {
-    test('adds list of number correctly', () => {
-      const list = [5, 5, 10, 2]
-      const result = _.sum(list)
-      expect(result).toBe(22)
-    })
-    test('adds list of objects correctly using getter fn', () => {
-      const list = [{ value: 5 }, { value: 5 }, { value: 10 }, { value: 2 }]
-      const result = _.sum(list, x => x.value)
-      expect(result).toBe(22)
-    })
-    test('gracefully handles null input list', () => {
-      const result = _.sum(null as unknown as readonly number[])
-      expect(result).toBe(0)
-    })
-  })
-
-  describe('first function', () => {
-    test('returns first item in list', () => {
-      const list = [
-        { game: 'a', score: 100 },
-        { game: 'b', score: 200 }
-      ]
-      const result = _.first(list)
-      expect(result!.game).toBe('a')
-      expect(result!.score).toBe(100)
-    })
-    test('returns default value without error when list is empty', () => {
-      const list = [] as string[]
-      const result = _.first(list, 'yolo')
-      expect(result).toBe('yolo')
-    })
-    test('gracefully handles null input list', () => {
-      const result = _.first(NULL)
-      expect(result).toBe(undefined)
-    })
-  })
-
-  describe('last function', () => {
-    test('returns last item in list', () => {
-      const list = [
-        { game: 'a', score: 100 },
-        { game: 'b', score: 200 }
-      ]
-      const result = _.last(list)
-      expect(result!.game).toBe('b')
-      expect(result!.score).toBe(200)
-    })
-    test('returns default value without error when list is empty', () => {
-      const list = [] as string[]
-      const result = _.last(list, 'yolo')
-      expect(result).toBe('yolo')
-    })
-    test('gracefully handles null input list', () => {
-      const result = _.last(NULL)
-      expect(result).toBe(undefined)
-    })
-  })
-
-  describe('sort function', () => {
+  describe('sortBy function', () => {
     test('uses getter', () => {
       const list = [{ index: 2 }, { index: 0 }, { index: 1 }]
-      const result = _.sort(list, i => i.index)
+      const result = _.sortBy(list, ['index'])
       expect(result[0].index).toBe(0)
       expect(result[1].index).toBe(1)
       expect(result[2].index).toBe(2)
     })
-    test('uses descending order', () => {
+  })
+
+  describe('orderBy function', () => {
+    test('uses getter', () => {
       const list = [{ index: 2 }, { index: 0 }, { index: 1 }]
-      const result = _.sort(list, i => i.index, true)
-      expect(result[0].index).toBe(2)
-      expect(result[1].index).toBe(1)
-      expect(result[2].index).toBe(0)
-    })
-    test('gracefully handles null input list', () => {
-      const result = _.sort(null as any as number[], x => x)
-      expect(result).toEqual([])
+      const result = _.orderBy(list, ['index'], ['asc'])
+      expect(result[0].index).toBe(0)
     })
   })
 
@@ -257,6 +178,8 @@ describe('array module', () => {
       const result = _.max(list)
       expect(result).toBe(10)
     })
+  })
+  describe('maxBy function', () => {
     test('returns the max value from list of objects', () => {
       const list = [
         { game: 'a', score: 100 },
@@ -265,7 +188,7 @@ describe('array module', () => {
         { game: 'd', score: 400 },
         { game: 'e', score: 500 }
       ]
-      const result = _.max(list, x => x.score)
+      const result = _.maxBy(list, x => x.score)
       expect(result!.game).toBe('e')
       expect(result!.score).toBe(500)
     })
@@ -277,6 +200,9 @@ describe('array module', () => {
       const result = _.min(list)
       expect(result).toBe(2)
     })
+  })
+
+  describe('minBy function', () => {
     test('returns the min value from list of objects', () => {
       const list = [
         { game: 'a', score: 100 },
@@ -285,16 +211,16 @@ describe('array module', () => {
         { game: 'd', score: 400 },
         { game: 'e', score: 500 }
       ]
-      const result = _.min(list, x => x.score)
+      const result = _.minBy(list, x => x.score)
       expect(result!.game).toBe('a')
       expect(result!.score).toBe(100)
     })
   })
 
-  describe('cluster function', () => {
+  describe('chunk function', () => {
     test('returns an array of arrays', () => {
       const list = [1, 1, 1, 1, 1, 1, 1, 1]
-      const result = _.cluster(list)
+      const result = _.chunk(list, 2)
       const [a, b, c] = result
       expect(a).toEqual([1, 1])
       expect(b).toEqual([1, 1])
@@ -302,7 +228,7 @@ describe('array module', () => {
     })
     test('returns remainder in final cluster', () => {
       const list = [1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2]
-      const result = _.cluster(list, 3)
+      const result = _.chunk(list, 3)
       const [a, b, c, d] = result
       expect(a).toEqual([1, 1, 1])
       expect(b).toEqual([1, 1, 1])
@@ -314,25 +240,8 @@ describe('array module', () => {
   describe('unique function', () => {
     test('correctly removed duplicate items', () => {
       const list = [1, 1, 2]
-      const result = _.unique(list)
+      const result = _.uniq(list)
       expect(result).toEqual([1, 2])
-    })
-    test('uses key fn to correctly remove duplicate items', () => {
-      const list = [
-        { id: 'a', word: 'hello' },
-        { id: 'a', word: 'hello' },
-        { id: 'b', word: 'oh' },
-        { id: 'b', word: 'oh' },
-        { id: 'c', word: 'yolo' }
-      ]
-      const result = _.unique(list, x => x.id)
-      const [a, b, c] = result
-      expect(a.id).toBe('a')
-      expect(a.word).toBe('hello')
-      expect(b.id).toBe('b')
-      expect(b.word).toBe('oh')
-      expect(c.id).toBe('c')
-      expect(c.word).toBe('yolo')
     })
 
     test('correctly handles non string, number or symbol values', () => {
@@ -346,7 +255,7 @@ describe('array module', () => {
         { id: 'a', word: 'hello' },
         { id: 'a', word: 'hello' }
       ]
-      const result = _.unique(list)
+      const result = _.uniq(list)
       expect(result).toEqual([
         null,
         true,
@@ -355,6 +264,26 @@ describe('array module', () => {
         { id: 'a', word: 'hello' },
         { id: 'a', word: 'hello' }
       ])
+    })
+  })
+
+  describe('uniqBy function', () => {
+    test('uses key fn to correctly remove duplicate items', () => {
+      const list = [
+        { id: 'a', word: 'hello' },
+        { id: 'a', word: 'hello' },
+        { id: 'b', word: 'oh' },
+        { id: 'b', word: 'oh' },
+        { id: 'c', word: 'yolo' }
+      ]
+      const result = _.uniqBy(list, x => x.id)
+      const [a, b, c] = result
+      expect(a.id).toBe('a')
+      expect(a.word).toBe('hello')
+      expect(b.id).toBe('b')
+      expect(b.word).toBe('oh')
+      expect(c.id).toBe('c')
+      expect(c.word).toBe('yolo')
     })
   })
 
@@ -407,16 +336,6 @@ describe('array module', () => {
     })
   })
 
-  describe('flat function', () => {
-    test('returns all items in all arrays', () => {
-      const lists = [['a', 'b'], ['c', 'd'], ['e']]
-      const result = _.flat(lists)
-      expect(result).toEqual(['a', 'b', 'c', 'd', 'e'])
-      expect(result[0]).toBe('a')
-      expect(result[4]).toBe('e')
-    })
-  })
-
   describe('intersects function', () => {
     test('returns true if list a & b have items in common', () => {
       const listA = ['a', 'b']
@@ -443,13 +362,8 @@ describe('array module', () => {
   })
 
   describe('fork function', () => {
-    test('returns two empty arrays for null input', () => {
-      const [a, b] = _.fork(NULL, x => !!x)
-      expect(a).toEqual([])
-      expect(b).toEqual([])
-    })
     test('returns two empty arrays for one empty array input', () => {
-      const [a, b] = _.fork([], x => !!x)
+      const [a, b] = _.partition([], x => !!x)
       expect(a).toEqual([])
       expect(b).toEqual([])
     })
@@ -460,7 +374,7 @@ describe('array module', () => {
         { name: 'bo', group: 'Y' },
         { name: 'mary', group: 'Y' }
       ]
-      const [xs, ys] = _.fork(input, x => x.group === 'X')
+      const [xs, ys] = _.partition(input, x => x.group === 'X')
       expect(xs).toHaveLength(2)
       expect(ys).toHaveLength(2)
       const [r, s] = xs
@@ -472,25 +386,25 @@ describe('array module', () => {
     })
   })
 
-  describe('merge function', () => {
+  describe('mergeBy function', () => {
     test('returns empty array for two null inputs', () => {
-      const result = _.merge(NULL, NULL, x => '')
+      const result = _.mergeBy(NULL, NULL, x => '')
       expect(result).toEqual([])
     })
     test('returns an empty array for two empty array inputs', () => {
-      const result = _.merge([], [], x => '')
+      const result = _.mergeBy([], [], x => '')
       expect(result).toEqual([])
     })
     test('returns root for a null other input', () => {
-      const result = _.merge([], NULL, x => '')
+      const result = _.mergeBy([], NULL, x => '')
       expect(result).toEqual([])
     })
     test('returns empty array for a null root input', () => {
-      const result = _.merge(NULL, [], x => '')
+      const result = _.mergeBy(NULL, [], x => '')
       expect(result).toEqual([])
     })
     test('returns root for a null matcher input', () => {
-      const result = _.merge(
+      const result = _.mergeBy(
         ['a'],
         [],
         null as unknown as (x: string) => string
@@ -508,7 +422,7 @@ describe('array module', () => {
         { name: 'ray', group: 'XXX' },
         { name: 'mary', group: 'YYY' }
       ]
-      const result = _.merge(inputA, inputB, x => x.name)
+      const result = _.mergeBy(inputA, inputB, x => x.name)
       expect(result[0].group).toBe('XXX')
       expect(result[1].group).toBe('X')
       expect(result[2].group).toBe('Y')
@@ -562,45 +476,33 @@ describe('array module', () => {
 
   describe('compact', () => {
     const people = [null, 'hello', undefined, false, 23]
-    test('returns empty array for null input array', () => {
-      const result = _.compact(NULL)
-      expect(result).toEqual([])
-    })
     test('returns array with falsy values filtered out', () => {
       const result = _.compact(people)
       expect(result).toEqual(['hello', 23])
     })
   })
 
-  describe('diff function', () => {
-    test('handles null root', () => {
-      const result = _.diff(NULL, ['a'])
-      expect(result).toEqual(['a'])
-    })
+  describe('difference function', () => {
     test('handles null other', () => {
-      const result = _.diff(['a'], NULL)
+      const result = _.difference(['a'], NULL)
       expect(result).toEqual(['a'])
-    })
-    test('handles null inputs', () => {
-      const result = _.diff(NULL, NULL)
-      expect(result).toEqual([])
     })
     test('handles empty array root', () => {
-      const result = _.diff([], ['a'])
+      const result = _.difference([], ['a'])
       expect(result).toEqual([])
     })
     test('handles empty array other', () => {
-      const result = _.diff(['a'], [])
+      const result = _.difference(['a'], [])
       expect(result).toEqual(['a'])
     })
     test('returns all items from root that dont exist in other', () => {
-      const result = _.diff(['a', 'b', 'c'], ['c', 'd', 'e'])
+      const result = _.difference(['a', 'b', 'c'], ['c', 'd', 'e'])
       expect(result).toEqual(['a', 'b'])
     })
     test('uses identity function', () => {
       const identity = ({ letter }: { letter: string }) => letter
       const letter = (l: string) => ({ letter: l })
-      const result = _.diff(
+      const result = _.differenceBy(
         [letter('a'), letter('b'), letter('c')],
         [letter('c'), letter('d'), letter('e')],
         identity
@@ -609,28 +511,7 @@ describe('array module', () => {
     })
   })
 
-  describe('alphabetical function', () => {
-    test('uses getter', () => {
-      const list = [{ name: 'Leo' }, { name: 'AJ' }, { name: 'Cynthia' }]
-      const result = _.alphabetical(list, i => i.name)
-      expect(result[0].name).toBe('AJ')
-      expect(result[1].name).toBe('Cynthia')
-      expect(result[2].name).toBe('Leo')
-    })
-    test('uses descending order', () => {
-      const list = [{ name: 'Leo' }, { name: 'AJ' }, { name: 'Cynthia' }]
-      const result = _.alphabetical(list, i => i.name, 'desc')
-      expect(result[0].name).toBe('Leo')
-      expect(result[1].name).toBe('Cynthia')
-      expect(result[2].name).toBe('AJ')
-    })
-    test('gracefully handles null input list', () => {
-      const result = _.alphabetical(null as any as string[], x => x)
-      expect(result).toEqual([])
-    })
-  })
-
-  describe('counting function', () => {
+  describe('countBy function', () => {
     const people = [
       { name: 'ray', group: 'X' },
       { name: 'sara', group: 'X' },
@@ -638,15 +519,11 @@ describe('array module', () => {
       { name: 'mary', group: 'Y' }
     ]
     test('returns correctly counted items object', () => {
-      const result = _.counting(people, p => p.group)
+      const result = _.countBy(people, p => p.group)
       expect(result).toEqual({
         X: 2,
         Y: 2
       })
-    })
-    test('does not error on bad input', () => {
-      _.counting(null as unknown as number[], x => x)
-      _.counting(undefined as unknown as number[], x => x)
     })
   })
 
@@ -750,25 +627,25 @@ describe('array module', () => {
   })
 
   describe('toggleInPlace function', () => {
-    it('should return same reference', () => {
+    test('should return same reference', () => {
       const arr = ['a']
       const result = _.toggleInPlace(arr, 'a')
       expect(arr === result).toBe(true)
     })
 
-    it('should add item to the end of list', () => {
+    test('should add item to the end of list', () => {
       const arr = ['a']
       const result = _.toggleInPlace(arr, 'b')
       expect(arr).toEqual(['a', 'b'])
     })
 
-    it('should remove item from list', () => {
+    test('should remove item from list', () => {
       const arr = ['a', 'b']
       const result = _.toggleInPlace(arr, 'b')
       expect(arr).toEqual(['a'])
     })
 
-    it('should add item to the beginning of list', () => {
+    test('should add item to the beginning of list', () => {
       const arr = ['a']
       const result = _.toggleInPlace(arr, 'b', { strategy: 'prepend' })
       expect(arr).toEqual(['b', 'a'])

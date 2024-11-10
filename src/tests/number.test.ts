@@ -1,4 +1,5 @@
-import * as _ from '..'
+import { describe, expect, test } from 'bun:test'
+import * as _ from '../number'
 
 describe('number module', () => {
   describe('toFloat function', () => {

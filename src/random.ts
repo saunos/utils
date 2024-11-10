@@ -9,7 +9,7 @@ import { list } from './array'
  * @example
  * random(0, 100) // => a random number between 0 and 100
  */
-export const random = (min: number, max: number) => {
+export const random = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
@@ -78,7 +78,7 @@ export const shuffle = <T>(array: readonly T[]): T[] => {
  * uid(7) // => UaOKdlW
  * uid(20, '*') // => dyJdbC*NsEgcnGjTHS
  */
-export const uid = (length: number, specials = '') => {
+export const uid = (length: number, specials = ''): string => {
   const characters = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789${specials}`
   return list(1, length).reduce(acc => {
     return acc + characters.charAt(random(0, characters.length - 1))

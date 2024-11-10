@@ -1,107 +1,399 @@
-import { isArray, isFunction } from './typed'
+import * as est from 'es-toolkit/array'
+
+import { isFunction } from './predicates'
 
 /**
  * @category Array
  *
- * @description
- * Sorts an array of items into groups. The return value is a map where the keys are
- * the group ids the given getGroupId function produced and the value is an array of
- * each item in that group.
- *
- * @example
- * const fish = [
- *   {
- *     name: 'Marlin',
- *     source: 'ocean'
- *   },
- *   {
- *     name: 'Bass',
- *     source: 'lake'
- *   },
- *   {
- *     name: 'Trout',
- *     source: 'lake'
- *   }
- * ]
- * const fishBySource = group(fish, f => f.source) // => { ocean: [marlin], lake: [bass, trout] }
+ * @alias {import('es-toolkit/array').compact}
  */
-export const group = <T, Key extends string | number | symbol>(
-  array: ReadonlyArray<T>,
-  getGroupId: (item: T) => Key
-): Partial<Record<Key, T[]>> => {
-  return array.reduce(
-    (acc, item) => {
-      const groupId = getGroupId(item)
-      if (!acc[groupId]) acc[groupId] = []
-      acc[groupId].push(item)
-      return acc
-    },
-    {} as Record<Key, T[]>
-  )
-}
+export const compact: typeof est.compact = est.compact
 
 /**
  * @category Array
  *
- * @description
- * Creates an array of grouped elements, the first of which contains the
- * first elements of the given arrays, the second of which contains the
- * second elements of the given arrays, and so on.
- * credit:
- *  https://gist.github.com/briancavalier/62f784e20e4fffc4d671126b7f91bad0
- *
- * @example
- * const zipped = zip(['a', 'b'], [1, 2], [true, false]) // [['a', 1, true], ['b', 2, false]]
+ * @alias {import('es-toolkit/array').groupBy}
  */
-export function zip<Arrays extends ReadonlyArray<any>[]>(
-  ...arrays: Arrays
-): ReadonlyArray<Zip<Arrays>> {
-  if (!arrays || !arrays.length) return []
-  const len = Math.min(...arrays.map(a => a.length))
-  const zipped: Zip<Arrays>[] = new Array(len)
-  for (let i = 0; i < len; i++) {
-    zipped[i] = arrays.map(a => a[i]) as Zip<Arrays>
-  }
-  return zipped
-}
-
-type Zip<A extends ReadonlyArray<any>> = {
-  [K in keyof A]: A[K] extends ReadonlyArray<infer T> ? T : never
-}
+export const groupBy: typeof est.groupBy = est.groupBy
 
 /**
  * @category Array
  *
- * @description
- * Creates an object mapping the specified keys to their corresponding values
- *
- * @example
- * const zipped = zipToObject(['a', 'b'], [1, 2]) // { a: 1, b: 2 }
- * const zipped = zipToObject(['a', 'b'], (k, i) => k + i) // { a: 'a0', b: 'b1' }
- * const zipped = zipToObject(['a', 'b'], 1) // { a: 1, b: 1 }
+ * @alias {import('es-toolkit/array').zip}
  */
-export function zipToObject<K extends string | number | symbol, V>(
-  keys: readonly K[],
-  values: V | ((key: K, idx: number) => V) | V[]
-): Record<K, V> {
-  if (!keys || !keys.length) {
-    return {} as Record<K, V>
-  }
+export const zip: typeof est.zip = est.zip
 
-  const getValue = isFunction(values)
-    ? values
-    : isArray(values)
-      ? (_k: K, i: number) => values[i]
-      : (_k: K, _i: number) => values
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').zipObject}
+ */
+export const zipObject: typeof est.zipObject = est.zipObject
 
-  return keys.reduce(
-    (acc, key, idx) => {
-      acc[key] = getValue(key, idx)
-      return acc
-    },
-    {} as Record<K, V>
-  )
-}
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').zipWith}
+ */
+export const zipWith: typeof est.zipWith = est.zipWith
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').sortBy}
+ */
+export const sortBy: typeof est.sortBy = est.sortBy
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').orderBy}
+ */
+export const orderBy: typeof est.orderBy = est.orderBy
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').fill}
+ */
+export const fill: typeof est.fill = est.fill
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').at}
+ */
+export const at: typeof est.at = est.at
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').flatMap}
+ */
+export const flatMap: typeof est.flatMap = est.flatMap
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').flatMapDeep}
+ */
+export const flatMapDeep: typeof est.flatMapDeep = est.flatMapDeep
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').flatten}
+ */
+export const flatten: typeof est.flatten = est.flatten
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').flattenDeep}
+ */
+export const flattenDeep: typeof est.flattenDeep = est.flattenDeep
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').forEachRight}
+ */
+export const forEachRight: typeof est.forEachRight = est.forEachRight
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').head}
+ */
+export const head: typeof est.head = est.head
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').initial}
+ */
+export const initial: typeof est.initial = est.initial
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').keyBy}
+ */
+export const keyBy: typeof est.keyBy = est.keyBy
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').last}
+ */
+export const last: typeof est.last = est.last
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').partition}
+ */
+export const partition: typeof est.partition = est.partition
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').pullAt}
+ */
+export const pullAt: typeof est.pullAt = est.pullAt
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').sample}
+ */
+export const sample: typeof est.sample = est.sample
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').sampleSize}
+ */
+export const sampleSize: typeof est.sampleSize = est.sampleSize
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').shuffle}
+ */
+export const shuffle: typeof est.shuffle = est.shuffle
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').tail}
+ */
+export const tail: typeof est.tail = est.tail
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').toFilled}
+ */
+export const toFilled: typeof est.toFilled = est.toFilled
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').union}
+ */
+export const union: typeof est.union = est.union
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').unionBy}
+ */
+export const unionBy: typeof est.unionBy = est.unionBy
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').unionWith}
+ */
+export const unionWith: typeof est.unionWith = est.unionWith
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').uniqWith}
+ */
+export const uniqWith: typeof est.uniqWith = est.uniqWith
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').unzip}
+ */
+export const unzip: typeof est.unzip = est.unzip
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').unzipWith}
+ */
+export const unzipWith: typeof est.unzipWith = est.unzipWith
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').without}
+ */
+export const without: typeof est.without = est.without
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').intersection}
+ */
+export const intersection: typeof est.intersection = est.intersection
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').intersectionBy}
+ */
+export const intersectionBy: typeof est.intersectionBy = est.intersectionBy
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').intersectionWith}
+ */
+export const intersectionWith: typeof est.intersectionWith =
+  est.intersectionWith
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').difference}
+ */
+export const difference: typeof est.difference = est.difference
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').differenceBy}
+ */
+export const differenceBy: typeof est.differenceBy = est.differenceBy
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').differenceWith}
+ */
+export const differenceWith: typeof est.differenceWith = est.differenceWith
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').drop}
+ */
+export const drop: typeof est.drop = est.drop
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').dropWhile}
+ */
+export const dropWhile: typeof est.dropWhile = est.dropWhile
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').dropRight}
+ */
+export const dropRight: typeof est.dropRight = est.dropRight
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').dropRightWhile}
+ */
+export const dropRightWhile: typeof est.dropRightWhile = est.dropRightWhile
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').take}
+ */
+export const take: typeof est.take = est.take
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').takeRight}
+ */
+export const takeRight: typeof est.takeRight = est.takeRight
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').takeRightWhile}
+ */
+export const takeRightWhile: typeof est.takeRightWhile = est.takeRightWhile
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').takeWhile}
+ */
+export const takeWhile: typeof est.takeWhile = est.takeWhile
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').maxBy}
+ */
+export const maxBy: typeof est.maxBy = est.maxBy
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').minBy}
+ */
+export const minBy: typeof est.minBy = est.minBy
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').chunk}
+ */
+export const chunk: typeof est.chunk = est.chunk
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').uniq}
+ */
+export const uniq: typeof est.uniq = est.uniq
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').uniqBy}
+ */
+export const uniqBy: typeof est.uniqBy = est.uniqBy
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').isSubset}
+ */
+export const isSubset: typeof est.isSubset = est.isSubset
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').xor}
+ */
+export const xor: typeof est.xor = est.xor
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').xorBy}
+ */
+export const xorBy: typeof est.xorBy = est.xorBy
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').xorWith}
+ */
+export const xorWith: typeof est.xorWith = est.xorWith
+
+/**
+ * @category Array
+ *
+ * @alias {import('es-toolkit/array').countBy}
+ */
+export const countBy: typeof est.countBy = est.countBy
 
 /**
  * @category Array
@@ -114,176 +406,12 @@ export function zipToObject<K extends string | number | symbol, V>(
  * @example
  * const greatest = () => boil(numbers, (a, b) => a > b)
  */
-export const boil = <T>(
+export const boilDownTo = <T>(
   array: readonly T[],
   compareFunc: (a: T, b: T) => T
-) => {
+): T | null => {
   if (!array || (array.length ?? 0) === 0) return null
   return array.reduce(compareFunc)
-}
-
-/**
- * @category Array
- *
- * @description
- * Sum all numbers in an array. Optionally provide a function
- * to convert objects in the array to number values.
- *
- * @example
- * sum([1, 2, 3]) // => 6
- */
-export function sum<T extends number>(array: readonly T[]): number
-export function sum<T extends object>(
-  array: readonly T[],
-  fn: (item: T) => number
-): number
-export function sum<T extends object | number>(
-  array: readonly any[],
-  fn?: (item: T) => number
-): number {
-  return (array || []).reduce((acc, item) => acc + (fn ? fn(item) : item), 0)
-}
-
-/**
- * @category Array
- *
- * @description
- * Get the first item in an array or a default value
- */
-export const first = <T>(
-  array: readonly T[],
-  defaultValue: T | null | undefined = undefined
-) => {
-  return array?.length > 0 ? array[0] : defaultValue
-}
-
-/**
- * @category Array
- *
- * @description
- */
-export const last = <T>(
-  array: readonly T[],
-  defaultValue: T | null | undefined = undefined
-) => {
-  return array?.length > 0 ? array[array.length - 1] : defaultValue
-}
-
-/**
- * @category Array
- *
- * @description
- * Sort an array without modifying it and return
- * the newly sorted value
- *
- * @example
- * const fish = [
- *   {
- *     name: 'Marlin',
- *     weight: 105
- *   },
- *   {
- *     name: 'Bass',
- *     weight: 8
- *   },
- *   {
- *     name: 'Trout',
- *     weight: 13
- *   }
- * ]
- * sort(fish, f => f.weight) // => [bass, trout, marlin]
- * sort(fish, f => f.weight, true) // => [marlin, trout, bass]
- */
-export const sort = <T>(
-  array: readonly T[],
-  getter: (item: T) => number,
-  desc = false
-) => {
-  if (!array) return []
-  const asc = (a: T, b: T) => getter(a) - getter(b)
-  const dsc = (a: T, b: T) => getter(b) - getter(a)
-  return array.slice().sort(desc === true ? dsc : asc)
-}
-
-/**
- * @category Array
- *
- * @description
- * Sort an array without modifying it and return
- * the newly sorted value. Allows for a string
- * sorting value.
- *
- * @example
- * const gods = [
- *   {
- *     name: 'Ra',
- *     power: 100
- *   },
- *   {
- *     name: 'Zeus',
- *     power: 98
- *   },
- *   {
- *     name: 'Loki',
- *     power: 72
- *   },
- *   {
- *     name: 'Vishnu',
- *     power: 100
- *   }
- * ]
- * alphabetical(gods, g => g.name) // => [Loki, Ra, Vishnu, Zeus]
- * alphabetical(gods, g => g.name, 'desc') // => [Zeus, Vishnu, Ra, Loki]
- */
-export const alphabetical = <T>(
-  array: readonly T[],
-  getter: (item: T) => string,
-  dir: 'asc' | 'desc' = 'asc'
-) => {
-  if (!array) return []
-  const asc = (a: T, b: T) => `${getter(a)}`.localeCompare(getter(b))
-  const dsc = (a: T, b: T) => `${getter(b)}`.localeCompare(getter(a))
-  return array.slice().sort(dir === 'desc' ? dsc : asc)
-}
-
-/**
- * @category Array
- *
- * @description
- * Given an array of objects and an identity callback function to determine how each object should
- * be identified. Returns an object where the keys are the id values the callback returned and each value
- * is an integer telling how many times that id occurred.
- *
- * @example
- *  const gods = [
- *   {
- *     name: 'Ra',
- *     culture: 'egypt'
- *   },
- *   {
- *     name: 'Zeus',
- *     culture: 'greek'
- *   },
- *   {
- *     name: 'Loki',
- *     culture: 'greek'
- *   }
- * ]
- * counting(gods, g => g.culture) // => { egypt: 1, greek: 2 }
- */
-export const counting = <T, TId extends string | number | symbol>(
-  list: readonly T[],
-  identity: (item: T) => TId
-): Record<TId, number> => {
-  if (!list) return {} as Record<TId, number>
-  return list.reduce(
-    (acc, item) => {
-      const id = identity(item)
-      acc[id] = (acc[id] ?? 0) + 1
-      return acc
-    },
-    {} as Record<TId, number>
-  )
 }
 
 /**
@@ -388,20 +516,11 @@ export const objectify = <T, Key extends string | number | symbol, Value = T>(
  *
  * @example
  * max([ 2, 3, 5]) == 5
- * max([{ num: 1 }, { num: 2 }], x => x.num) == { num: 2 }
  */
 export function max(array: readonly [number, ...number[]]): number
 export function max(array: readonly number[]): number | null
-export function max<T>(
-  array: readonly T[],
-  getter: (item: T) => number
-): T | null
-export function max<T>(
-  array: readonly T[],
-  getter?: (item: T) => number
-): T | null {
-  const get = getter ?? ((v: any) => v)
-  return boil(array, (a, b) => (get(a) > get(b) ? a : b))
+export function max<T>(array: readonly T[]): T | null {
+  return boilDownTo(array, (a, b) => (a > b ? a : b))
 }
 
 /**
@@ -412,93 +531,11 @@ export function max<T>(
  *
  * @example
  * min([1, 2, 3, 4]) == 1
- * min([{ num: 1 }, { num: 2 }], x => x.num) == { num: 1 }
  */
 export function min(array: readonly [number, ...number[]]): number
 export function min(array: readonly number[]): number | null
-export function min<T>(
-  array: readonly T[],
-  getter: (item: T) => number
-): T | null
-export function min<T>(
-  array: readonly T[],
-  getter?: (item: T) => number
-): T | null {
-  const get = getter ?? ((v: any) => v)
-  return boil(array, (a, b) => (get(a) < get(b) ? a : b))
-}
-
-/**
- * @category Array
- *
- * @description
- * Splits a single list into many lists of the desired size. If
- * given a list of 10 items and a size of 2, it will return 5
- * lists with 2 items each
- *
- * @example
- * const gods = ['Ra', 'Zeus', 'Loki', 'Vishnu', 'Icarus', 'Osiris', 'Thor', 'Apollo', 'Artemis', 'Athena']
- *
- * cluster(gods, 3)
- * // => [
- * //   [ 'Ra', 'Zeus', 'Loki' ],
- * //   [ 'Vishnu', 'Icarus', 'Osiris' ],
- * //   [ 'Thor', 'Apollo', 'Artemis' ],
- * //   [ 'Athena' ]
- * // ]
- */
-export const cluster = <T>(list: readonly T[], size = 2): T[][] => {
-  const clusterCount = Math.ceil(list.length / size)
-  return new Array(clusterCount).fill(null).map((_c: null, i: number) => {
-    return list.slice(i * size, i * size + size)
-  })
-}
-
-/**
- * @category Array
- *
- * @description
- * Given a list of items returns a new list with only
- * unique items. Accepts an optional identity function
- * to convert each item in the list to a comparable identity
- * value
- *
- * @example
- * const fish = [
- *   {
- *     name: 'Marlin',
- *     weight: 105,
- *     source: 'ocean'
- *   },
- *   {
- *     name: 'Salmon',
- *     weight: 22,
- *     source: 'river'
- *   },
- *   {
- *     name: 'Salmon',
- *     weight: 22,
- *     source: 'river'
- *   }
- * ]
- *
- * unique( fish, f => f.name )
- * // [
- * //     { name: 'Marlin', weight: 105, source: 'ocean' },
- * //     { name: 'Salmon', weight: 22, source: 'river' }
- * // ]
- */
-export const unique = <T, K>(
-  array: readonly T[],
-  toKey?: (item: T) => K
-): T[] => {
-  const valueMap = array.reduce((acc, item) => {
-    const key = toKey ? toKey(item) : item
-    if (acc.get(key)) return acc
-    acc.set(key, item)
-    return acc
-  }, new Map())
-  return Array.from(valueMap.values())
+export function min<T>(array: readonly T[]): T | null {
+  return boilDownTo(array, (a, b) => (a < b ? a : b))
 }
 
 /**
@@ -524,7 +561,9 @@ export function* range<T = number>(
   valueOrMapper: T | ((i: number) => T) = i => i as T,
   step = 1
 ): Generator<T> {
-  const mapper = isFunction(valueOrMapper) ? valueOrMapper : () => valueOrMapper
+  const mapper = (
+    isFunction(valueOrMapper) ? valueOrMapper : () => valueOrMapper
+  ) as (i: number) => T
   const start = end ? startOrLength : 0
   const final = end ?? startOrLength
   for (let i = start; i <= final; i += step) {
@@ -557,28 +596,6 @@ export const list = <T = number>(
   step?: number
 ): T[] => {
   return Array.from(range(startOrLength, end, valueOrMapper, step))
-}
-
-/**
- * @category Array
- *
- * @description
- * Given an array of arrays, returns a single
- * dimentional array with all items in it.
- *
- * @deprecated
- * Use Array.prototype.flat instead
- *
- * @example
- * const gods = [['ra', 'loki'], ['zeus']]
- *
- * flat(gods) // => [ra, loki, zeus]
- */
-export const flat = <T>(lists: readonly T[][]): T[] => {
-  return lists.reduce((acc, list) => {
-    acc.push(...list)
-    return acc
-  }, [])
 }
 
 /**
@@ -619,53 +636,6 @@ export const intersects = <T, K extends string | number | symbol>(
  * @category Array
  *
  * @description
- * Split an array into two array based on
- * a true/false condition function
- *
- * @example
- *
- * const gods = [
- *   {
- *     name: 'Ra',
- *     power: 100
- *   },
- *   {
- *     name: 'Zeus',
- *     power: 98
- *   },
- *   {
- *     name: 'Loki',
- *     power: 72
- *   },
- *   {
- *     name: 'Vishnu',
- *     power: 100
- *   }
- * ]
- *
- * const [finalGods, lesserGods] = fork(gods, f => f.power > 90) // [[ra, vishnu, zues], [loki]]
- */
-export const fork = <T>(
-  list: readonly T[],
-  condition: (item: T) => boolean
-): [T[], T[]] => {
-  if (!list) return [[], []]
-  return list.reduce(
-    (acc, item) => {
-      const [a, b] = acc
-      if (condition(item)) {
-        return [[...a, item], b]
-      }
-      return [a, [...b, item]]
-    },
-    [[], []] as [T[], T[]]
-  )
-}
-
-/**
- * @category Array
- *
- * @description
  * Given two lists of the same type, iterate the first list
  * and replace items matched by the matcher func in the
  * first place.
@@ -690,13 +660,13 @@ export const fork = <T>(
  *   }
  * ]
  *
- * merge(gods, newGods, f => f.name) // => [{name: "Zeus" power: 100}, {name: "Ra", power: 97}]
+ * mergeBy(gods, newGods, f => f.name) // => [{name: "Zeus" power: 100}, {name: "Ra", power: 97}]
  */
-export const merge = <T>(
+export const mergeBy = <T>(
   root: readonly T[],
   others: readonly T[],
   matcher: (item: T) => any
-) => {
+): readonly T[] => {
   if (!others && !root) return []
   if (!others) return root
   if (!root) return []
@@ -753,7 +723,7 @@ export const replaceOrAppend = <T>(
   list: readonly T[],
   newItem: T,
   match: (a: T, idx: number) => boolean
-) => {
+): T[] => {
   if (!list && !newItem) return []
   if (!newItem) return [...list]
   if (!list) return [newItem]
@@ -801,6 +771,8 @@ const _toggle = <T>(
 /**
  * @category Array
  *
+ * @deprecated use xor instead
+ *
  * @description
  * If the item matching the condition already exists
  * in the list it will be removed. If it does not it
@@ -839,7 +811,7 @@ export const toggle = <T>(
   options?: {
     strategy?: 'prepend' | 'append'
   }
-) => {
+): T[] => {
   if (!Array.isArray(items)) return _toggle(list, items as T, toKey, options)
 
   let result = [...list]
@@ -851,6 +823,8 @@ export const toggle = <T>(
 
 /**
  * @category Array
+ *
+ * @deprecated use xor instead
  *
  * @description
  * If the item matching the condition already exists
@@ -874,7 +848,7 @@ export function toggleInPlace<T extends {}>(
   options?: {
     strategy?: 'prepend' | 'append'
   }
-) {
+): T[] {
   const idx = list.findIndex(x => x === item)
   if (idx === -1) {
     if (options?.strategy === 'prepend') {
@@ -890,56 +864,6 @@ export function toggleInPlace<T extends {}>(
   return list
 }
 
-type Falsy = null | undefined | false | '' | 0 | 0n
-
-/**
- * @category Array
- *
- * @description
- * Given a list returns a new list with
- * only truthy values
- *
- * @example
- * const fish = ['salmon', null, false, NaN, 'sockeye', 'bass']
- *
- * compact(fish) // => ['salmon', 'sockeye', 'bass']
- */
-export const compact = <T>(list: readonly (T | Falsy)[]): T[] => {
-  return (list?.filter(x => !!x) as T[]) ?? []
-}
-
-/**
- * @category Array
- *
- * @description
- * Returns all items from the first list that
- * do not exist in the second list.
- *
- * @example
- * const oldWorldGods = ['ra', 'zeus']
- * const newWorldGods = ['vishnu', 'zeus']
- *
- * diff(oldWorldGods, newWorldGods) // => ['ra']
- */
-export const diff = <T>(
-  root: readonly T[],
-  other: readonly T[],
-  identity: (item: T) => string | number | symbol = (t: T) =>
-    t as unknown as string | number | symbol
-): T[] => {
-  if (!root?.length && !other?.length) return []
-  if (root?.length === undefined) return [...other]
-  if (!other?.length) return [...root]
-  const bKeys = other.reduce(
-    (acc, item) => {
-      acc[identity(item)] = true
-      return acc
-    },
-    {} as Record<string | number | symbol, boolean>
-  )
-  return root.filter(a => !bKeys[identity(a)])
-}
-
 /**
  * @category Array
  *
@@ -952,7 +876,7 @@ export const diff = <T>(
  * const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
  * shift(arr, 3) // => [7, 8, 9, 1, 2, 3, 4, 5, 6]
  */
-export function shift<T>(arr: Array<T>, n: number) {
+export function shift<T>(arr: Array<T>, n: number): T[] {
   if (arr.length === 0) return arr
 
   const shiftNumber = n % arr.length
@@ -987,6 +911,8 @@ export function removeInPlace<T>(
 
 /**
  * @category Array
+ *
+ * @deprecated use castArray instead
  *
  * @description
  * Converts a value or an array of values to an array.
