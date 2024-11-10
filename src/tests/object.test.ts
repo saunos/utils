@@ -490,9 +490,8 @@ describe('object module', () => {
         'friend.name': 'loki',
         'friend.power': 80,
         'enemies.0.name': 'hathor',
-        'enemies.0.power': 12
-        // FIXME: timestamp is missing
-        // timestamp: now
+        'enemies.0.power': 12,
+        timestamp: now
       })
     })
   })

@@ -1,7 +1,7 @@
 import * as compat from 'es-toolkit/compat'
 import * as est from 'es-toolkit/object'
 import { objectify } from './array'
-import { isObject } from './predicates'
+import { isPlainObject } from './predicates'
 
 /**
  * @category Object
@@ -180,7 +180,7 @@ export const flattenKeys = <TValue extends object>(value: TValue): string[] => {
   if (!value) return []
 
   const getKeys = (nested: any, paths: string[]): string[] => {
-    if (isObject(nested)) {
+    if (isPlainObject(nested)) {
       return Object.entries(nested).flatMap(([k, v]) =>
         getKeys(v, [...paths, k])
       )
