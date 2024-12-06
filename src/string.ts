@@ -179,7 +179,7 @@ export const repeat: typeof compat.repeat = compat.repeat
  *
  * @alias {import('es-toolkit/compat').replace}
  */
-// export const replace = compat.replace
+export const replaceString: typeof compat.replace = compat.replace
 
 /**
  * @category String

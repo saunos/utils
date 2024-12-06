@@ -176,9 +176,9 @@ describe('typed module', () => {
       const result = _.isNumber(22.0567)
       expect(result).toBe(true)
     })
-    test('returns false for NaN', () => {
+    test('returns true for NaN', () => {
       const result = _.isNumber(NaN)
-      expect(result).toBe(false)
+      expect(result).toBe(true)
     })
     test('returns false for array', () => {
       const result = _.isNumber([1, 2, 3])
@@ -218,29 +218,6 @@ describe('typed module', () => {
     test('returns false for float', () => {
       const result = _.isInt(22.0567)
       expect(result).toBe(false)
-    })
-  })
-
-  describe('isFloat function', () => {
-    class Data {}
-    test('returns false for non-number values', () => {
-      expect(_.isFloat(undefined)).toBe(false)
-      expect(_.isFloat(null)).toBe(false)
-      expect(_.isFloat(false)).toBe(false)
-      expect(_.isFloat(new Data())).toBe(false)
-      expect(_.isFloat(NaN)).toBe(false)
-      expect(_.isFloat([1, 2, 3])).toBe(false)
-      expect(_.isFloat({})).toBe(false)
-      expect(_.isFloat('abc')).toBe(false)
-      expect(_.isFloat(String('abc'))).toBe(false)
-    })
-    test('returns false for int', () => {
-      const result = _.isFloat(22)
-      expect(result).toBe(false)
-    })
-    test('returns true for float', () => {
-      const result = _.isFloat(22.0567)
-      expect(result).toBe(true)
     })
   })
 

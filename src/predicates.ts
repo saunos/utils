@@ -15,13 +15,6 @@ export const isInt = (value: any): value is number => {
 
 /**
  * @category Predicates
- */
-export const isFloat = (value: any): value is number => {
-  return isNumber(value) && value % 1 !== 0
-}
-
-/**
- * @category Predicates
  *
  * @description
  * This is really a _best guess_ promise checking. You
@@ -54,7 +47,7 @@ export function isEmpty(value: any): boolean {
 }
 
 /**
- * @category Typed
+ * @category Predicates
  *
  * @description
  * Asserts that the given condition is true, otherwise throws an error.
@@ -66,7 +59,7 @@ export function assert(condition: any, msg?: string): asserts condition {
 }
 
 /**
- * @category Typed
+ * @category Predicates
  *
  * @description
  * Asserts that the given value is not null or undefined, otherwise throws an error.
@@ -81,7 +74,7 @@ export function assertNotNull<T>(
 }
 
 /**
- * @category Typed
+ * @category Predicates
  */
 export function assertNever(value: never): never {
   throw new Error(`Unexpected object: ${value}`)
@@ -275,15 +268,7 @@ export const isNull: typeof compat.isNull = compat.isNull
  *
  * @alias {import('es-toolkit/predicates').isNumber}
  */
-export const isNumber = (value: any): value is number => {
-  try {
-    return Number(value) === value
-  } catch {
-    return false
-  }
-}
-// FIXME: compat.isNumber fails on NaN
-// compat.isNumber
+export const isNumber: typeof compat.isNumber = compat.isNumber
 
 /**
  * @category Predicates
