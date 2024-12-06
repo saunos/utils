@@ -2,7 +2,7 @@ type AnyFunc = (...args: any[]) => any
 type IsProp<T, K extends keyof T> = T[K] extends AnyFunc ? never : K
 
 /**
- * ExtractProps
+ * @category Class
  *
  * ExtractProps is a utility type that extracts the properties of a class that are not functions.
  *

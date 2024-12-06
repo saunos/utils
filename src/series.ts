@@ -136,6 +136,7 @@ export function series<T>(
       current
     )
   }
+
   return {
     min,
     max,

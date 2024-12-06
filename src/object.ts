@@ -193,6 +193,11 @@ export const flattenKeys = <TValue extends object>(value: TValue): string[] => {
   return getKeys(value, [])
 }
 
+// export const flattenKeys = <TValue extends object>(value: TValue): string[] => {
+//   return Object.keys(flattenObject(value))
+// }
+
+// FIXME: https://github.com/toss/es-toolkit/issues/816
 /**
  * @category Object
  *
@@ -212,6 +217,13 @@ export const flattenObject = <TValue extends object>(value: TValue): object => {
     k => get(value, k)
   )
 }
+
+/**
+ * @category Object
+ *
+ * @alias {import('es-toolkit/object').findKey}
+ */
+export const findKey: typeof est.findKey = est.findKey
 
 /**
  * @category Object

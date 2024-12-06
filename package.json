@@ -4,72 +4,86 @@
 	"description": "Functional utility library - modern, simple, typed, powerful",
 	"module": "dist/index.js",
 	"types": "dist/index.d.ts",
+	"main": "dist/index.cjs",
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
 		},
 		"./array": {
 			"types": "./dist/array.d.ts",
-			"import": "./dist/array.js"
+			"import": "./dist/array.js",
+			"require": "./dist/array.cjs"
 		},
 		"./object": {
 			"types": "./dist/object.d.ts",
-			"import": "./dist/object.js"
+			"import": "./dist/object.js",
+			"require": "./dist/object.cjs"
 		},
 		"./random": {
 			"types": "./dist/random.d.ts",
-			"import": "./dist/random.js"
+			"import": "./dist/random.js",
+			"require": "./dist/random.cjs"
 		},
 		"./curry": {
 			"types": "./dist/curry.d.ts",
-			"import": "./dist/curry.js"
+			"import": "./dist/curry.js",
+			"require": "./dist/curry.cjs"
 		},
 		"./async": {
 			"types": "./dist/async.d.ts",
-			"import": "./dist/async.js"
+			"import": "./dist/async.js",
+			"require": "./dist/async.cjs"
 		},
 		"./string": {
 			"types": "./dist/string.d.ts",
-			"import": "./dist/string.js"
+			"import": "./dist/string.js",
+			"require": "./dist/string.cjs"
 		},
 		"./class": {
 			"types": "./dist/class.d.ts",
-			"import": "./dist/class.js"
+			"import": "./dist/class.js",
+			"require": "./dist/class.cjs"
 		},
 		"./series": {
 			"types": "./dist/series.d.ts",
-			"import": "./dist/series.js"
+			"import": "./dist/series.js",
+			"require": "./dist/series.cjs"
 		},
 		"./number": {
 			"types": "./dist/number.d.ts",
-			"import": "./dist/number.js"
+			"import": "./dist/number.js",
+			"require": "./dist/number.cjs"
 		},
 		"./function": {
 			"types": "./dist/function.d.ts",
-			"import": "./dist/function.js"
+			"import": "./dist/function.js",
+			"require": "./dist/function.cjs"
 		},
 		"./math": {
 			"types": "./dist/math.d.ts",
-			"import": "./dist/math.js"
+			"import": "./dist/math.js",
+			"require": "./dist/math.cjs"
 		},
 		"./predicates": {
 			"types": "./dist/predicates.d.ts",
-			"import": "./dist/predicates.js"
+			"import": "./dist/predicates.js",
+			"require": "./dist/predicates.cjs"
 		},
 		"./promise": {
 			"types": "./dist/promise.d.ts",
-			"import": "./dist/promise.js"
+			"import": "./dist/promise.js",
+			"require": "./dist/promise.cjs"
 		},
 		"./util": {
 			"types": "./dist/util.d.ts",
-			"import": "./dist/util.js"
+			"import": "./dist/util.js",
+			"require": "./dist/util.cjs"
 		}
 	},
 	"sideEffects": false,
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"repository": {
 		"url": "https://github.com/saunos/utils"
 	},
@@ -79,7 +93,8 @@
 	"scripts": {
 		"test": "bun test --coverage",
 		"check": "biome check src/**/*",
-		"build": "bun run build.ts"
+		"build": "bun run build.ts",
+		"tsc": "tsc --noEmit"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.4.1",
@@ -91,10 +106,7 @@
 		"typedoc-github-theme": "^0.1.2",
 		"typescript": "^5.3.3"
 	},
-	"engines": {
-		"node": ">=14.18.0"
-	},
 	"dependencies": {
-		"es-toolkit": "^1.26.1"
+		"es-toolkit": "1.29.0"
 	}
 }

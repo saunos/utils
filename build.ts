@@ -3,11 +3,9 @@ import isolatedDecl from 'bun-plugin-isolated-decl'
 import { existsSync } from 'node:fs'
 import { rm } from 'node:fs/promises'
 
-if (existsSync('./dist')) {
-  await rm('./dist', { recursive: true })
-}
+import type { BuildConfig } from 'bun'
 
-await Bun.build({
+const defaultBuildConfig: BuildConfig = {
   entrypoints: [
     './src/array.ts',
     './src/async.ts',
@@ -26,7 +24,23 @@ await Bun.build({
     './src/util.ts'
   ],
   outdir: './dist',
-  plugins: [isolatedDecl()],
+  plugins: [isolatedDecl()]
+
+  // minify: true,
+}
+
+if (existsSync('./dist')) {
+  await rm('./dist', { recursive: true })
+}
+
+await Bun.build({
+  ...defaultBuildConfig,
   format: 'esm',
-  naming: '[name].[ext]' // default
+  naming: '[name].[ext]'
+})
+
+await Bun.build({
+  ...defaultBuildConfig,
+  format: 'cjs',
+  naming: '[name].cjs'
 })
