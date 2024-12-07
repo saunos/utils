@@ -31,7 +31,7 @@
 			"indentWidth": 2,
 			"indentStyle": "space",
 			"semicolons": "asNeeded",
-			"trailingComma": "none",
+			"trailingCommas": "none",
 			"quoteStyle": "single",
 			"bracketSpacing": true,
 			"bracketSameLine": false,
