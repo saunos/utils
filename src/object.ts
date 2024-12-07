@@ -1,7 +1,5 @@
 import * as compat from 'es-toolkit/compat'
 import * as est from 'es-toolkit/object'
-import { objectify } from './array'
-import { isPlainObject } from './predicates'
 
 /**
  * @category Object
@@ -177,46 +175,15 @@ export const set: typeof compat.set = compat.set
  * keys({ name: 'ra', children: [{ name: 'hathor' }] }) // ['name', 'children.0.name']
  */
 export const flattenKeys = <TValue extends object>(value: TValue): string[] => {
-  if (!value) return []
-
-  const getKeys = (nested: any, paths: string[]): string[] => {
-    if (isPlainObject(nested)) {
-      return Object.entries(nested).flatMap(([k, v]) =>
-        getKeys(v, [...paths, k])
-      )
-    }
-    if (Array.isArray(nested)) {
-      return nested.flatMap((item, i) => getKeys(item, [...paths, `${i}`]))
-    }
-    return [paths.join('.')]
-  }
-  return getKeys(value, [])
+  return Object.keys(flattenObject(value))
 }
 
-// export const flattenKeys = <TValue extends object>(value: TValue): string[] => {
-//   return Object.keys(flattenObject(value))
-// }
-
-// FIXME: https://github.com/toss/es-toolkit/issues/816
 /**
  * @category Object
  *
- * @description
- * Flattens a deep object to a single dimension, converting
- * the keys to dot notation.
- *
- * @example
- * flattenObject({ name: 'ra', children: [{ name: 'hathor' }] })
- * // { name: 'ra', 'children.0.name': 'hathor' }
+ * @alias {import('es-toolkit/object').flattenObject}
  */
-export const flattenObject = <TValue extends object>(value: TValue): object => {
-  if (!value) return {}
-  return objectify(
-    flattenKeys(value),
-    k => k,
-    k => get(value, k)
-  )
-}
+export const flattenObject: typeof est.flattenObject = est.flattenObject
 
 /**
  * @category Object
