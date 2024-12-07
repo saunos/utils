@@ -177,7 +177,7 @@ describe('typed module', () => {
       expect(result).toBe(true)
     })
     test('returns true for NaN', () => {
-      const result = _.isNumber(NaN)
+      const result = _.isNumber(Number.NaN)
       expect(result).toBe(true)
     })
     test('returns false for array', () => {
@@ -205,7 +205,7 @@ describe('typed module', () => {
       expect(_.isInt(null)).toBe(false)
       expect(_.isInt(false)).toBe(false)
       expect(_.isInt(new Data())).toBe(false)
-      expect(_.isInt(NaN)).toBe(false)
+      expect(_.isInt(Number.NaN)).toBe(false)
       expect(_.isInt([1, 2, 3])).toBe(false)
       expect(_.isInt({})).toBe(false)
       expect(_.isInt('abc')).toBe(false)
@@ -294,6 +294,7 @@ describe('typed module', () => {
       expect(_.isPromise(() => {})).toBe(false)
       expect(_.isPromise(Symbol(''))).toBe(false)
       expect(_.isPromise(Symbol('hello'))).toBe(false)
+      // biome-ignore lint/suspicious/noThenProperty: <explanation>
       expect(_.isPromise({ then: 2 })).toBe(false)
     })
   })
@@ -435,7 +436,7 @@ describe('typed module', () => {
       loop: null as any,
       person: jake,
       date: new Date(0),
-      reg: new RegExp('/regexp/ig'),
+      reg: /\/regexp\/ig/,
       [symbolKey]: 'symbol'
     }
     complex.loop = complex

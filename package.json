@@ -83,9 +83,7 @@
 		}
 	},
 	"sideEffects": false,
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"repository": {
 		"url": "https://github.com/saunos/utils"
 	},
@@ -95,11 +93,12 @@
 	"scripts": {
 		"test": "bun test --coverage",
 		"check": "biome check src/**/*",
+		"check:fix": "biome check src/**/* --write",
 		"build": "bun run build.ts",
 		"tsc": "tsc --noEmit"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^1.4.1",
+		"@biomejs/biome": "^1.9.4",
 		"@sinonjs/fake-timers": "^13.0.5",
 		"@types/bun": "^1.1.13",
 		"@types/sinonjs__fake-timers": "^8.1.5",
