@@ -101,7 +101,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
-		"@sinonjs/fake-timers": "^13.0.5",
+		"@sinonjs/fake-timers": "^14.0.0",
 		"@types/bun": "^1.1.13",
 		"@types/sinonjs__fake-timers": "^8.1.5",
 		"bun-plugin-isolated-decl": "^0.1.6",
