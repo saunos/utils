@@ -3,11 +3,11 @@ import { jsonPathProxy } from '../util'
 
 interface DeepObject {
   root: {
-    field: Array<{
+    field?: Array<{
       value: string
       nested: {
         prop: number
-      }
+      } | null
     }>
   }
 }

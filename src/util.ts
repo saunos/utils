@@ -109,6 +109,20 @@ export type PathProxy<T> = {
       : { toString(): string }
 } & { toString(): string }
 
+// Remove optional keys from object type
+type RequiredKeys<T> = {
+  [K in keyof T]-?: T[K]
+}
+
+// Deeply remove optional, undefined and null
+type DeepRequired<T> = T extends object
+  ? T extends Array<infer U>
+    ? Array<DeepRequired<NonNullable<U>>>
+    : RequiredKeys<{
+        [K in keyof T]: DeepRequired<NonNullable<T[K]>>
+      }>
+  : NonNullable<T>
+
 /**
  * @category Utility
  *
@@ -121,7 +135,7 @@ export type PathProxy<T> = {
  * const path1 = $.root.field[1].value.toString() // "root.field[1].value"
  * ```
  */
-export function jsonPathProxy<T>(path = ''): PathProxy<T> {
+export function jsonPathProxy<T>(path = ''): PathProxy<DeepRequired<T>> {
   return new Proxy(
     {},
     {
@@ -135,15 +149,19 @@ export function jsonPathProxy<T>(path = ''): PathProxy<T> {
           const newPath = path
             ? `${path}[${prop.toString()}]`
             : `[${prop.toString()}]`
-          return jsonPathProxy<any>(newPath)
+          return jsonPathProxy<NonNullable<any>>(newPath)
         }
 
         // Handle property access
         const newPath = path ? `${path}.${prop.toString()}` : prop.toString()
-        return jsonPathProxy<any>(newPath)
+        return jsonPathProxy<
+          NonNullable<
+            T extends object ? { [K in keyof T]: NonNullable<T[K]> } : T
+          >
+        >(newPath)
       }
     }
-  ) as PathProxy<T>
+  ) as PathProxy<DeepRequired<T>>
 }
 
 /**

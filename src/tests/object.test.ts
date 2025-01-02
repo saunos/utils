@@ -5,6 +5,12 @@ import * as _ from '../object'
 const NULL = null as unknown as {}
 
 describe('object module', () => {
+  describe('assign function', () => {
+    test('assigns all values from source to target', () => {
+      const result: { a: number; b: number } = _.assign({ a: 2 }, { b: 3 })
+      expect(result).toEqual({ a: 2, b: 3 })
+    })
+  })
   describe('shake function', () => {
     test('removes all undefined values', () => {
       const src = {

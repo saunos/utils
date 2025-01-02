@@ -5,6 +5,34 @@ import * as est from 'es-toolkit/object'
  * @category Object
  *
  * @description
+ * Wrapper over Object.assign to merge multiple objects with proper typing.
+ *
+ * @example
+ * const ra = {
+ *   name: 'Ra',
+ *   power: 100
+ * }
+ *
+ * assign(ra, { name: 'Loki' })
+ * // => { name: Loki, power: 100 }
+ */
+export function assign<A, B, C, D, E, F, G, H>(
+  a: A,
+  b?: B,
+  c?: C,
+  d?: D,
+  e?: E,
+  f?: F,
+  g?: G,
+  h?: H
+): A & B & C & D & E & F & G & H {
+  return Object.assign({}, a, b, c, d, e, f, g, h)
+}
+
+/**
+ * @category Object
+ *
+ * @description
  * Removes (shakes out) undefined entries from an
  * object. Optional second argument shakes out values
  * by custom evaluation.
@@ -124,13 +152,10 @@ export function listify<TValue, TKey extends string | number | symbol, KResult>(
   if (!obj) return []
   const entries = Object.entries(obj)
   if (entries.length === 0) return []
-  return entries.reduce(
-    (acc, entry) => {
-      acc.push(toItem(entry[0] as TKey, entry[1] as TValue))
-      return acc
-    },
-    [] as KResult[]
-  )
+  return entries.reduce((acc, entry) => {
+    acc.push(toItem(entry[0] as TKey, entry[1] as TValue))
+    return acc
+  }, [] as KResult[])
 }
 
 /**
