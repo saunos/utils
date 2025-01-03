@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { jsonPathProxy, type JsonPath } from '../util'
+import { type JsonPath, jsonPathProxy } from '../util'
 
 interface DeepObject {
   root: {
