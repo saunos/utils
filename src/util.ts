@@ -101,11 +101,11 @@ export const toString: typeof compat.toString = compat.toString
  */
 export const uniqueId: typeof compat.uniqueId = compat.uniqueId
 
-export type PathProxy<T> = {
+type JsonPathBase<T> = {
   [P in keyof T]: T[P] extends Array<infer U>
-    ? PathProxy<U>[] & { toString(): string }
+    ? JsonPathBase<U>[] & { toString(): string }
     : T[P] extends object
-      ? PathProxy<T[P]> & { toString(): string }
+      ? JsonPathBase<T[P]> & { toString(): string }
       : { toString(): string }
 } & { toString(): string }
 
@@ -123,6 +123,8 @@ type DeepRequired<T> = T extends object
       }>
   : NonNullable<T>
 
+export type JsonPath<T> = JsonPathBase<DeepRequired<T>>
+
 /**
  * @category Utility
  *
@@ -135,7 +137,7 @@ type DeepRequired<T> = T extends object
  * const path1 = $.root.field[1].value.toString() // "root.field[1].value"
  * ```
  */
-export function jsonPathProxy<T>(path = ''): PathProxy<DeepRequired<T>> {
+export function jsonPathProxy<T>(path = ''): JsonPath<T> {
   return new Proxy(
     {},
     {
@@ -161,7 +163,7 @@ export function jsonPathProxy<T>(path = ''): PathProxy<DeepRequired<T>> {
         >(newPath)
       }
     }
-  ) as PathProxy<DeepRequired<T>>
+  ) as JsonPath<T>
 }
 
 /**
