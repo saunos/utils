@@ -2,7 +2,7 @@
 
 <div>
   <h3 align="center">
-    Functional utility library - modern, simple, typed, powerful
+    Functional utility library
   </h3>
 </div>
 
@@ -21,7 +21,7 @@
   </a>
 </p>
 
-Reexports mostly from
+Complimentary utilities mostly to be used with
 [es-toolkit](https://github.com/saunos/es-toolkit)
 , some things from [radash](https://github.com/saunos/radash) and some custom stuff.
 

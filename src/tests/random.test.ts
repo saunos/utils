@@ -1,6 +1,9 @@
 import { describe, expect, test } from 'bun:test'
-import { sum } from '../math'
 import * as _ from '../random'
+
+function sum(arr: number[]) {
+  return arr.reduce((acc, curr) => acc + curr, 0)
+}
 
 describe('random module', () => {
   describe('random function', () => {

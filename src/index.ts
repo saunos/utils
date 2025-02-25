@@ -1,11 +1,10 @@
 export * from './array'
-export * from './function'
+
 export * from './async'
 export type { ExtractProps } from './class'
 export * from './curry'
 export * from './number'
 export * from './object'
-export * from './promise'
 export * from './util'
 export { draw, random, shuffle, uid } from './random'
 export { series } from './series'
