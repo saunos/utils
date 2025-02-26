@@ -16,8 +16,8 @@ describe('jsonPathProxy', () => {
   it('should generate type-safe paths', () => {
     const $ = jsonPathProxy<DeepObject>()
 
-    const path1 = $.root.field[1].value.toString()
-    const path2 = $.root.field[0].nested.prop.toString()
+    const path1 = $.root.field[1].value.$
+    const path2 = $.root.field[0].nested.prop.$
 
     expect(path1).toBe('root.field[1].value')
     expect(path2).toBe('root.field[0].nested.prop')
@@ -26,7 +26,7 @@ describe('jsonPathProxy', () => {
   it('should work', () => {
     const $ = jsonPathProxy<DeepObject>()
     function foo<T>(path: string, $: JsonPath<DeepObject>['root']) {
-      return $.field[0].nested.prop.toString()
+      return $.field[0].nested.prop.$
     }
     foo('root', $.root)
   })

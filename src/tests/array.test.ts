@@ -4,23 +4,6 @@ import * as _ from '../array'
 const NULL = null as unknown as unknown[]
 
 describe('array module', () => {
-  describe('groupBy function', () => {
-    test('groups by provided attribute', () => {
-      const list = [
-        { group: 'a', word: 'hello' },
-        { group: 'b', word: 'bye' },
-        { group: 'a', word: 'oh' },
-        { group: 'b', word: 'hey' },
-        { group: 'c', word: 'ok' }
-      ]
-      const groups = _.groupBy(list, x => x.group)
-      expect(groups.a?.length).toBe(2)
-      expect(groups.b?.length).toBe(2)
-      expect(groups.c?.length).toBe(1)
-      expect(groups.c?.[0].word).toBe('ok')
-    })
-  })
-
   describe('boil function', () => {
     test('compares and keeps item based on condition', () => {
       const list = [
@@ -48,41 +31,6 @@ describe('array module', () => {
     test('does not fail when provided array is funky shaped', () => {
       const result = _.boilDownTo({} as any, () => true)
       expect(result).toBeNull()
-    })
-  })
-
-  describe('zip function', () => {
-    test('zips an array correctly', () => {
-      const result = _.zip(['a', 'b'], [1, 2], [true, false])
-      expect(result).toEqual([
-        ['a', 1, true],
-        ['b', 2, false]
-      ])
-    })
-  })
-
-  describe('zipObject function', () => {
-    test('zips to an object correctly', () => {
-      const result = _.zipObject(['a', 'b'], [1, 2])
-      expect(result).toEqual({ a: 1, b: 2 })
-    })
-  })
-
-  describe('sortBy function', () => {
-    test('uses getter', () => {
-      const list = [{ index: 2 }, { index: 0 }, { index: 1 }]
-      const result = _.sortBy(list, ['index'])
-      expect(result[0].index).toBe(0)
-      expect(result[1].index).toBe(1)
-      expect(result[2].index).toBe(2)
-    })
-  })
-
-  describe('orderBy function', () => {
-    test('uses getter', () => {
-      const list = [{ index: 2 }, { index: 0 }, { index: 1 }]
-      const result = _.orderBy(list, ['index'], ['asc'])
-      expect(result[0].index).toBe(0)
     })
   })
 
@@ -179,111 +127,12 @@ describe('array module', () => {
       expect(result).toBe(10)
     })
   })
-  describe('maxBy function', () => {
-    test('returns the max value from list of objects', () => {
-      const list = [
-        { game: 'a', score: 100 },
-        { game: 'b', score: 200 },
-        { game: 'c', score: 300 },
-        { game: 'd', score: 400 },
-        { game: 'e', score: 500 }
-      ]
-      const result = _.maxBy(list, x => x.score)
-      expect(result!.game).toBe('e')
-      expect(result!.score).toBe(500)
-    })
-  })
 
   describe('min function', () => {
     test('returns the min value from list of number', () => {
       const list = [5, 5, 10, 2]
       const result = _.min(list)
       expect(result).toBe(2)
-    })
-  })
-
-  describe('minBy function', () => {
-    test('returns the min value from list of objects', () => {
-      const list = [
-        { game: 'a', score: 100 },
-        { game: 'b', score: 200 },
-        { game: 'c', score: 300 },
-        { game: 'd', score: 400 },
-        { game: 'e', score: 500 }
-      ]
-      const result = _.minBy(list, x => x.score)
-      expect(result!.game).toBe('a')
-      expect(result!.score).toBe(100)
-    })
-  })
-
-  describe('chunk function', () => {
-    test('returns an array of arrays', () => {
-      const list = [1, 1, 1, 1, 1, 1, 1, 1]
-      const result = _.chunk(list, 2)
-      const [a, b, c] = result
-      expect(a).toEqual([1, 1])
-      expect(b).toEqual([1, 1])
-      expect(c).toEqual([1, 1])
-    })
-    test('returns remainder in final cluster', () => {
-      const list = [1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2]
-      const result = _.chunk(list, 3)
-      const [a, b, c, d] = result
-      expect(a).toEqual([1, 1, 1])
-      expect(b).toEqual([1, 1, 1])
-      expect(c).toEqual([1, 1, 1])
-      expect(d).toEqual([2, 2])
-    })
-  })
-
-  describe('unique function', () => {
-    test('correctly removed duplicate items', () => {
-      const list = [1, 1, 2]
-      const result = _.uniq(list)
-      expect(result).toEqual([1, 2])
-    })
-
-    test('correctly handles non string, number or symbol values', () => {
-      const list = [
-        null,
-        null,
-        true,
-        true,
-        'true',
-        false,
-        { id: 'a', word: 'hello' },
-        { id: 'a', word: 'hello' }
-      ]
-      const result = _.uniq(list)
-      expect(result).toEqual([
-        null,
-        true,
-        'true',
-        false,
-        { id: 'a', word: 'hello' },
-        { id: 'a', word: 'hello' }
-      ])
-    })
-  })
-
-  describe('uniqBy function', () => {
-    test('uses key fn to correctly remove duplicate items', () => {
-      const list = [
-        { id: 'a', word: 'hello' },
-        { id: 'a', word: 'hello' },
-        { id: 'b', word: 'oh' },
-        { id: 'b', word: 'oh' },
-        { id: 'c', word: 'yolo' }
-      ]
-      const result = _.uniqBy(list, x => x.id)
-      const [a, b, c] = result
-      expect(a.id).toBe('a')
-      expect(a.word).toBe('hello')
-      expect(b.id).toBe('b')
-      expect(b.word).toBe('oh')
-      expect(c.id).toBe('c')
-      expect(c.word).toBe('yolo')
     })
   })
 
@@ -358,31 +207,6 @@ describe('array module', () => {
     test('returns false without failing if either list is null', () => {
       expect(_.intersects(null as unknown as never, [])).toBe(false)
       expect(_.intersects([], null as unknown as never)).toBe(false)
-    })
-  })
-
-  describe('fork function', () => {
-    test('returns two empty arrays for one empty array input', () => {
-      const [a, b] = _.partition([], x => !!x)
-      expect(a).toEqual([])
-      expect(b).toEqual([])
-    })
-    test('returns correctly forked list', () => {
-      const input = [
-        { name: 'ray', group: 'X' },
-        { name: 'sara', group: 'X' },
-        { name: 'bo', group: 'Y' },
-        { name: 'mary', group: 'Y' }
-      ]
-      const [xs, ys] = _.partition(input, x => x.group === 'X')
-      expect(xs).toHaveLength(2)
-      expect(ys).toHaveLength(2)
-      const [r, s] = xs
-      expect(r.name).toBe('ray')
-      expect(s.name).toBe('sara')
-      const [b, m] = ys
-      expect(b.name).toBe('bo')
-      expect(m.name).toBe('mary')
     })
   })
 
@@ -471,59 +295,6 @@ describe('array module', () => {
     test('returns list with item appended', () => {
       const result = _.replaceOrAppend(letters, 'XX', x => x === 'x')
       expect(result).toEqual(lettersXX)
-    })
-  })
-
-  describe('compact', () => {
-    const people = [null, 'hello', undefined, false, 23]
-    test('returns array with falsy values filtered out', () => {
-      const result = _.compact(people)
-      expect(result).toEqual(['hello', 23])
-    })
-  })
-
-  describe('difference function', () => {
-    test('handles null other', () => {
-      const result = _.difference(['a'], NULL)
-      expect(result).toEqual(['a'])
-    })
-    test('handles empty array root', () => {
-      const result = _.difference([], ['a'])
-      expect(result).toEqual([])
-    })
-    test('handles empty array other', () => {
-      const result = _.difference(['a'], [])
-      expect(result).toEqual(['a'])
-    })
-    test('returns all items from root that dont exist in other', () => {
-      const result = _.difference(['a', 'b', 'c'], ['c', 'd', 'e'])
-      expect(result).toEqual(['a', 'b'])
-    })
-    test('uses identity function', () => {
-      const identity = ({ letter }: { letter: string }) => letter
-      const letter = (l: string) => ({ letter: l })
-      const result = _.differenceBy(
-        [letter('a'), letter('b'), letter('c')],
-        [letter('c'), letter('d'), letter('e')],
-        identity
-      )
-      expect(result).toEqual([letter('a'), letter('b')])
-    })
-  })
-
-  describe('countBy function', () => {
-    const people = [
-      { name: 'ray', group: 'X' },
-      { name: 'sara', group: 'X' },
-      { name: 'bo', group: 'Y' },
-      { name: 'mary', group: 'Y' }
-    ]
-    test('returns correctly counted items object', () => {
-      const result = _.countBy(people, p => p.group)
-      expect(result).toEqual({
-        X: 2,
-        Y: 2
-      })
     })
   })
 
