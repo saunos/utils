@@ -4,6 +4,33 @@ import * as _ from '../array'
 const NULL = null as unknown as unknown[]
 
 describe('array module', () => {
+  describe('zip function', () => {
+    test('zips an array correctly', () => {
+      const result = _.zip(['a', 'b'], [1, 2], [true, false])
+      expect(result).toEqual([
+        ['a', 1, true],
+        ['b', 2, false]
+      ])
+    })
+
+    test('zips an array spread correctly', () => {
+      const r = new Map<string, string[]>(
+        Object.entries({
+          a: ['a', '1'],
+          b: ['b', '2'],
+          c: ['c', '3']
+        })
+      )
+
+      const result = _.zip(...r.values())
+
+      expect(result).toEqual([
+        ['a', 'b', 'c'],
+        ['1', '2', '3']
+      ])
+    })
+  })
+
   describe('boil function', () => {
     test('compares and keeps item based on condition', () => {
       const list = [
