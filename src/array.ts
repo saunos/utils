@@ -527,3 +527,29 @@ export function toArray<T>(value: T | T[]): T[] {
   if (value === undefined || value === null) return []
   return Array.isArray(value) ? value : [value]
 }
+
+
+/**
+ * @category Array
+ *
+ * @description
+ * Unlike es-toolkit version this doesn't force tuples as arguments
+ *
+ * @example
+ * const zipped = zip(['a', 'b'], [1, 2], [true, false]) // [['a', 1, true], ['b', 2, false]]
+ */
+export function zip<Arrays extends ReadonlyArray<any>[]>(
+  ...arrays: Arrays
+): ReadonlyArray<Zip<Arrays>> {
+  if (!arrays || !arrays.length) return []
+  const len = Math.min(...arrays.map(a => a.length))
+  const zipped: Zip<Arrays>[] = new Array(len)
+  for (let i = 0; i < len; i++) {
+    zipped[i] = arrays.map(a => a[i]) as Zip<Arrays>
+  }
+  return zipped
+}
+
+type Zip<A extends ReadonlyArray<any>> = {
+  [K in keyof A]: A[K] extends ReadonlyArray<infer T> ? T : never
+}
